@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.gaurav.weatherforecastapp.interfaces.RetrofitApi;
 import com.gaurav.weatherforecastapp.retrofit.response.CurrentWeatherDataResponse;
+import com.gaurav.weatherforecastapp.retrofit.response.WeatherForecastDataResponse;
 import com.gaurav.weatherforecastapp.retrofit.services.RetrofitService;
 import com.gaurav.weatherforecastapp.utils.Constants;
 
@@ -64,6 +65,34 @@ public class WeatherDataRepository {
 
         return weatherDataResponseMutableLiveData;
 
+    }
+
+    public LiveData<WeatherForecastDataResponse> getForecastWeatherData(String cityName, String weatherApiKey){
+
+        final MutableLiveData<WeatherForecastDataResponse> weatherForecastDataResponseMutableLiveData = new MutableLiveData<>();
+
+        retrofitApi.getWeatherForecastData(cityName,weatherApiKey).enqueue(new Callback<WeatherForecastDataResponse>() {
+            @Override
+            public void onResponse(Call<WeatherForecastDataResponse> call, Response<WeatherForecastDataResponse> weatherForecastDataResponseResponse) {
+
+                if (weatherForecastDataResponseResponse.isSuccessful()) {
+                    Log.v(Constants.TAG, "Result Forecast Weather Data Repository:" + weatherForecastDataResponseResponse.message());
+
+                    weatherForecastDataResponseMutableLiveData.setValue(weatherForecastDataResponseResponse.body());
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(Call<WeatherForecastDataResponse> call, Throwable t) {
+
+                weatherForecastDataResponseMutableLiveData.setValue(new WeatherForecastDataResponse(t));
+
+            }
+        });
+
+        return weatherForecastDataResponseMutableLiveData;
     }
 
 

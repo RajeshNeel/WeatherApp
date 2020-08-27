@@ -12,6 +12,9 @@ import androidx.core.content.ContextCompat;
 
 import com.gaurav.weatherforecastapp.R;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import dmax.dialog.SpotsDialog;
 
 /**
@@ -72,6 +75,20 @@ public class CommonMethods {
                     haveConnectedMobile = true;
         }
         return haveConnectedWifi || haveConnectedMobile;
+    }
+
+    public static String convertUnixToDate(long date){
+        Date date1 = new Date(date*1000L);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm dd EEE MM YYYY");
+        String formattedDate = simpleDateFormat.format(date1);
+        return formattedDate;
+    }
+
+    public static String convertUnixToHour(long dt){
+        Date date1 = new Date(dt*1000L);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+        String formattedDate = simpleDateFormat.format(date1);
+        return formattedDate;
     }
 
 
