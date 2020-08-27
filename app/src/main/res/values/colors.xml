@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorPrimaryDark">#8595A5</color>
     <color name="colorAccent">#03DAC5</color>
+
+    <color name="delivery_text_color">#68D5F1</color>
+    <color name="white_color">#FFFFFF</color>
+    <color name="round_stroke_color">#FFF08D</color>
+    <color name="white_smoke_color">#F5F5F5</color>
+    <color name="white_gain_sb_color">#DCDCDC</color>
+    <color name="blue_color">#1b667e</color>
 </resources>
