@@ -22,44 +22,7 @@
 
 
             <TextView
-                android:id="@+id/temp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="46dp"
-                android:text="temperature"
-                android:visibility="gone"
-                android:textSize="22sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/speed"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Speed"
-                android:visibility="gone"
-                android:textSize="22sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.503"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/temp" />
-
-            <TextView
-                android:id="@+id/humidity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Humidity"
-                android:visibility="gone"
-                android:textSize="22sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/speed" />
-
-            <TextView
-                android:id="@+id/textViewCurrentDate"
+                android:id="@+id/textViewCurrentDateForecast"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="25dp"
@@ -71,7 +34,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/textViewTemperature"
+                android:id="@+id/textViewTemperatureForecast"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
@@ -80,9 +43,9 @@
                 android:text="27\u00B0"
                 android:textStyle="normal"
                 android:textColor="@color/white_color"
-                android:textSize="110sp"
-                app:layout_constraintStart_toStartOf="@+id/textViewCurrentDate"
-                app:layout_constraintTop_toBottomOf="@+id/textViewCurrentDate" />
+                android:textSize="90sp"
+                app:layout_constraintStart_toStartOf="@+id/textViewCurrentDateForecast"
+                app:layout_constraintTop_toBottomOf="@+id/textViewCurrentDateForecast" />
 
             <pl.droidsonroids.gif.GifImageView
                 android:id="@+id/imageViewgif"
@@ -91,34 +54,34 @@
                 android:layout_marginEnd="1dp"
                 android:layout_marginRight="1dp"
                 android:src="@drawable/cloud"
-                app:layout_constraintBottom_toBottomOf="@+id/textViewTemperature"
+                app:layout_constraintBottom_toBottomOf="@+id/textViewTemperatureForecast"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/textViewTemperature"
+                app:layout_constraintTop_toTopOf="@+id/textViewTemperatureForecast"
                 />
 
             <TextView
-                android:id="@+id/textViewFeelsTemp"
+                android:id="@+id/textViewFeelsTempForecast"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="60dp"
                 android:text="Feels like 30\u00B0"
                 android:textSize="20sp"
                 android:textColor="@color/white_color"
-                app:layout_constraintEnd_toEndOf="@+id/textViewTemperature"
+                app:layout_constraintEnd_toEndOf="@+id/textViewTemperatureForecast"
                 app:layout_constraintHorizontal_bias="0.417"
-                app:layout_constraintStart_toStartOf="@+id/textViewTemperature"
-                app:layout_constraintTop_toBottomOf="@+id/textViewTemperature" />
+                app:layout_constraintStart_toStartOf="@+id/textViewTemperatureForecast"
+                app:layout_constraintTop_toBottomOf="@+id/textViewTemperatureForecast" />
 
             <TextView
-                android:id="@+id/textViewMinTemp"
+                android:id="@+id/textViewMinTempForecast"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="Min 24\u00B0"
                 android:textSize="20sp"
                 android:textColor="@color/white_color"
-                app:layout_constraintStart_toStartOf="@+id/textViewCurrentDate"
-                app:layout_constraintTop_toBottomOf="@+id/textViewFeelsTemp" />
+                app:layout_constraintStart_toStartOf="@+id/textViewCurrentDateForecast"
+                app:layout_constraintTop_toBottomOf="@+id/textViewFeelsTempForecast" />
 
             <ImageView
                 android:id="@+id/imageViewDownward"
@@ -127,20 +90,20 @@
                 android:layout_marginStart="2dp"
                 android:layout_marginLeft="2dp"
                 android:src="@drawable/ic_arrow_downward"
-                app:layout_constraintBottom_toBottomOf="@+id/textViewMinTemp"
-                app:layout_constraintStart_toEndOf="@+id/textViewMinTemp"
-                app:layout_constraintTop_toTopOf="@+id/textViewMinTemp" />
+                app:layout_constraintBottom_toBottomOf="@+id/textViewMinTempForecast"
+                app:layout_constraintStart_toEndOf="@+id/textViewMinTempForecast"
+                app:layout_constraintTop_toTopOf="@+id/textViewMinTempForecast" />
 
             <TextView
-                android:id="@+id/textViewMaxTemp"
+                android:id="@+id/textViewMaxTempForecast"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Max 29\u00B0"
                 android:textSize="20sp"
                 android:layout_marginStart="5dp"
                 android:textColor="@color/white_color"
-                app:layout_constraintBottom_toBottomOf="@+id/textViewMinTemp"
-                app:layout_constraintTop_toTopOf="@+id/textViewMinTemp"
+                app:layout_constraintBottom_toBottomOf="@+id/textViewMinTempForecast"
+                app:layout_constraintTop_toTopOf="@+id/textViewMinTempForecast"
                 app:layout_constraintStart_toEndOf="@+id/imageViewDownward"
                 tools:layout_editor_absoluteX="135dp"
                 android:layout_marginLeft="5dp" />
@@ -152,12 +115,12 @@
                 android:layout_marginStart="2dp"
                 android:layout_marginLeft="2dp"
                 android:src="@drawable/ic_arrow_upward"
-                app:layout_constraintBottom_toBottomOf="@+id/textViewMaxTemp"
-                app:layout_constraintStart_toEndOf="@+id/textViewMaxTemp"
-                app:layout_constraintTop_toTopOf="@+id/textViewMaxTemp" />
+                app:layout_constraintBottom_toBottomOf="@+id/textViewMaxTempForecast"
+                app:layout_constraintStart_toEndOf="@+id/textViewMaxTempForecast"
+                app:layout_constraintTop_toTopOf="@+id/textViewMaxTempForecast" />
 
             <TextView
-                android:id="@+id/textViewWeatherInfo"
+                android:id="@+id/textViewWeatherInfoForecast"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="40dp"
@@ -165,9 +128,9 @@
                 android:text="Overcast"
                 android:textSize="30sp"
                 android:textColor="@color/white_color"
-                app:layout_constraintBottom_toBottomOf="@+id/textViewMaxTemp"
+                app:layout_constraintBottom_toBottomOf="@+id/textViewMaxTempForecast"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/textViewFeelsTemp" />
+                app:layout_constraintTop_toTopOf="@+id/textViewFeelsTempForecast" />
 
             <Space
                 android:id="@+id/space"
@@ -177,8 +140,8 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="40dp"
                 android:background="@color/white_color"
-                app:layout_constraintStart_toStartOf="@+id/textViewMaxTemp"
-                app:layout_constraintTop_toBottomOf="@+id/textViewMaxTemp" />
+                app:layout_constraintStart_toStartOf="@+id/textViewMaxTempForecast"
+                app:layout_constraintTop_toBottomOf="@+id/textViewMaxTempForecast" />
 
             <TextView
                 android:id="@+id/textViewCurrentDetails"
@@ -191,11 +154,11 @@
                 android:textSize="25sp"
                 android:textStyle="normal"
                 android:textColor="@color/white_color"
-                app:layout_constraintStart_toStartOf="@+id/textViewMinTemp"
+                app:layout_constraintStart_toStartOf="@+id/textViewMinTempForecast"
                 app:layout_constraintTop_toBottomOf="@+id/space" />
 
             <TextView
-                android:id="@+id/textViewHumidity"
+                android:id="@+id/textViewHumidityForecast"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
@@ -209,7 +172,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textViewCurrentDetails" />
 
             <TextView
-                android:id="@+id/textViewHumidityValue"
+                android:id="@+id/textViewHumidityValueForecast"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="110dp"
@@ -218,12 +181,12 @@
                 android:textSize="20sp"
                 android:textStyle="normal"
                 android:textColor="@color/white_color"
-                app:layout_constraintBottom_toBottomOf="@+id/textViewHumidity"
-                app:layout_constraintStart_toEndOf="@+id/textViewHumidity"
-                app:layout_constraintTop_toTopOf="@+id/textViewHumidity" />
+                app:layout_constraintBottom_toBottomOf="@+id/textViewHumidityForecast"
+                app:layout_constraintStart_toEndOf="@+id/textViewHumidityForecast"
+                app:layout_constraintTop_toTopOf="@+id/textViewHumidityForecast" />
 
             <TextView
-                android:id="@+id/textViewPressure"
+                android:id="@+id/textViewPressureForecast"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -231,11 +194,11 @@
                 android:textSize="20sp"
                 android:textStyle="normal"
                 android:textColor="@color/white_color"
-                app:layout_constraintStart_toStartOf="@+id/textViewHumidity"
-                app:layout_constraintTop_toBottomOf="@+id/textViewHumidity" />
+                app:layout_constraintStart_toStartOf="@+id/textViewHumidityForecast"
+                app:layout_constraintTop_toBottomOf="@+id/textViewHumidityForecast" />
 
             <TextView
-                android:id="@+id/textViewPressureValue"
+                android:id="@+id/textViewPressureValueForecast"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="110dp"
@@ -244,12 +207,12 @@
                 android:textSize="20sp"
                 android:textStyle="normal"
                 android:textColor="@color/white_color"
-                app:layout_constraintBottom_toBottomOf="@+id/textViewPressure"
-                app:layout_constraintStart_toEndOf="@+id/textViewPressure"
-                app:layout_constraintTop_toTopOf="@+id/textViewPressure" />
+                app:layout_constraintBottom_toBottomOf="@+id/textViewPressureForecast"
+                app:layout_constraintStart_toEndOf="@+id/textViewPressureForecast"
+                app:layout_constraintTop_toTopOf="@+id/textViewPressureForecast" />
 
             <TextView
-                android:id="@+id/textViewUvIndex"
+                android:id="@+id/textViewUvIndexForecast"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -257,11 +220,11 @@
                 android:textSize="20sp"
                 android:textStyle="normal"
                 android:textColor="@color/white_color"
-                app:layout_constraintStart_toStartOf="@+id/textViewPressure"
-                app:layout_constraintTop_toBottomOf="@+id/textViewPressure" />
+                app:layout_constraintStart_toStartOf="@+id/textViewPressureForecast"
+                app:layout_constraintTop_toBottomOf="@+id/textViewPressureForecast" />
 
             <TextView
-                android:id="@+id/textViewUvIndexValue"
+                android:id="@+id/textViewUvIndexValueForecast"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="110dp"
@@ -270,9 +233,9 @@
                 android:textSize="20sp"
                 android:textStyle="normal"
                 android:textColor="@color/white_color"
-                app:layout_constraintBottom_toBottomOf="@+id/textViewUvIndex"
-                app:layout_constraintStart_toEndOf="@+id/textViewUvIndex"
-                app:layout_constraintTop_toTopOf="@+id/textViewUvIndex" />
+                app:layout_constraintBottom_toBottomOf="@+id/textViewUvIndexForecast"
+                app:layout_constraintStart_toEndOf="@+id/textViewUvIndexForecast"
+                app:layout_constraintTop_toTopOf="@+id/textViewUvIndexForecast" />
 
 
             <Space
@@ -283,11 +246,11 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="40dp"
                 android:background="@color/white_color"
-                app:layout_constraintStart_toStartOf="@+id/textViewUvIndex"
-                app:layout_constraintTop_toBottomOf="@+id/textViewUvIndex" />
+                app:layout_constraintStart_toStartOf="@+id/textViewUvIndexForecast"
+                app:layout_constraintTop_toBottomOf="@+id/textViewUvIndexForecast" />
 
             <TextView
-                android:id="@+id/textViewWind"
+                android:id="@+id/textViewWindForecast"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
@@ -301,7 +264,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/spaceCurrentDetails"/>
 
             <TextView
-                android:id="@+id/textViewWindValue"
+                android:id="@+id/textViewWindValueForecast"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
@@ -311,8 +274,8 @@
                 android:textSize="30sp"
                 android:textStyle="normal"
                 android:textColor="@color/round_stroke_color"
-                app:layout_constraintStart_toStartOf="@+id/textViewWind"
-                app:layout_constraintTop_toBottomOf="@+id/textViewWind"/>
+                app:layout_constraintStart_toStartOf="@+id/textViewWindForecast"
+                app:layout_constraintTop_toBottomOf="@+id/textViewWindForecast"/>
 
             <Space
                 android:id="@+id/spaceWindDetails"
@@ -322,11 +285,11 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="40dp"
                 android:background="@color/white_color"
-                app:layout_constraintStart_toStartOf="@+id/textViewWindValue"
-                app:layout_constraintTop_toBottomOf="@+id/textViewWindValue" />
+                app:layout_constraintStart_toStartOf="@+id/textViewWindValueForecast"
+                app:layout_constraintTop_toBottomOf="@+id/textViewWindValueForecast" />
 
             <TextView
-                android:id="@+id/textViewSunriseSunset"
+                android:id="@+id/textViewSunriseSunsetForecast"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
@@ -336,11 +299,11 @@
                 android:textSize="25sp"
                 android:textStyle="normal"
                 android:textColor="@color/white_color"
-                app:layout_constraintStart_toStartOf="@+id/textViewWind"
+                app:layout_constraintStart_toStartOf="@+id/textViewWindForecast"
                 app:layout_constraintTop_toBottomOf="@+id/spaceWindDetails"/>
 
             <TextView
-                android:id="@+id/textViewSunrise"
+                android:id="@+id/textViewSunriseForecast"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
@@ -351,8 +314,8 @@
                 app:layout_constraintHorizontal_weight="1"
                 android:textStyle="normal"
                 android:textColor="@color/white_color"
-                app:layout_constraintStart_toStartOf="@+id/textViewWind"
-                app:layout_constraintTop_toBottomOf="@+id/textViewSunriseSunset"/>
+                app:layout_constraintStart_toStartOf="@+id/textViewWindForecast"
+                app:layout_constraintTop_toBottomOf="@+id/textViewSunriseSunsetForecast"/>
 
             <ImageView
                 android:id="@+id/imageViewUpWardSunrise"
@@ -361,12 +324,12 @@
                 android:layout_marginStart="2dp"
                 android:layout_marginLeft="2dp"
                 android:src="@drawable/ic_arrow_upward"
-                app:layout_constraintBottom_toBottomOf="@+id/textViewSunrise"
-                app:layout_constraintStart_toEndOf="@+id/textViewSunrise"
-                app:layout_constraintTop_toTopOf="@+id/textViewSunrise" />
+                app:layout_constraintBottom_toBottomOf="@+id/textViewSunriseForecast"
+                app:layout_constraintStart_toEndOf="@+id/textViewSunriseForecast"
+                app:layout_constraintTop_toTopOf="@+id/textViewSunriseForecast" />
 
             <TextView
-                android:id="@+id/textViewSunriseTime"
+                android:id="@+id/textViewSunriseTimeForecast"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
@@ -377,12 +340,12 @@
                 app:layout_constraintHorizontal_weight="1"
                 android:textStyle="normal"
                 android:textColor="@color/white_color"
-                app:layout_constraintStart_toStartOf="@+id/textViewSunrise"
-                app:layout_constraintTop_toBottomOf="@+id/textViewSunrise"/>
+                app:layout_constraintStart_toStartOf="@+id/textViewSunriseForecast"
+                app:layout_constraintTop_toBottomOf="@+id/textViewSunriseForecast"/>
 
 
             <TextView
-                android:id="@+id/textViewSunset"
+                android:id="@+id/textViewSunsetForecast"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Sunset"
@@ -390,8 +353,8 @@
                 app:layout_constraintHorizontal_weight="1"
                 android:layout_marginStart="5dp"
                 android:textColor="@color/white_color"
-                app:layout_constraintBottom_toBottomOf="@+id/textViewSunrise"
-                app:layout_constraintTop_toTopOf="@+id/textViewSunrise"
+                app:layout_constraintBottom_toBottomOf="@+id/textViewSunriseForecast"
+                app:layout_constraintTop_toTopOf="@+id/textViewSunriseForecast"
                 app:layout_constraintStart_toEndOf="@+id/imageViewUpWardSunrise"
                 tools:layout_editor_absoluteX="135dp"
                 android:layout_marginLeft="5dp" />
@@ -403,12 +366,12 @@
                 android:layout_marginStart="2dp"
                 android:layout_marginLeft="2dp"
                 android:src="@drawable/ic_arrow_upward"
-                app:layout_constraintBottom_toBottomOf="@+id/textViewSunset"
-                app:layout_constraintStart_toEndOf="@+id/textViewSunset"
-                app:layout_constraintTop_toTopOf="@+id/textViewSunset" />
+                app:layout_constraintBottom_toBottomOf="@+id/textViewSunsetForecast"
+                app:layout_constraintStart_toEndOf="@+id/textViewSunsetForecast"
+                app:layout_constraintTop_toTopOf="@+id/textViewSunsetForecast" />
 
             <TextView
-                android:id="@+id/textViewSunsetTime"
+                android:id="@+id/textViewSunsetTimeForecast"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
@@ -419,8 +382,8 @@
                 app:layout_constraintHorizontal_weight="1"
                 android:textStyle="normal"
                 android:textColor="@color/white_color"
-                app:layout_constraintStart_toStartOf="@+id/textViewSunset"
-                app:layout_constraintTop_toBottomOf="@+id/textViewSunset"/>
+                app:layout_constraintStart_toStartOf="@+id/textViewSunsetForecast"
+                app:layout_constraintTop_toBottomOf="@+id/textViewSunsetForecast"/>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

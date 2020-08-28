@@ -42,6 +42,7 @@ public class WeatherDataRepository {
     }
 
     public LiveData<CurrentWeatherDataResponse> getCurrentWeatherData(String cityName, String weatherApiKey){
+
         final MutableLiveData<CurrentWeatherDataResponse> weatherDataResponseMutableLiveData = new MutableLiveData<>();
 
         retrofitApi.getCurrentWeatherData(cityName,weatherApiKey).enqueue(new Callback<CurrentWeatherDataResponse>() {

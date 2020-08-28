@@ -38,7 +38,10 @@ public class CurrentWeatherDataResponse {
     @Expose
     private String cityName;
 
-
+    @SerializedName("dt")
+    @Keep
+    @Expose
+    private String currentDate;
 
     @SerializedName("weather")
     @Keep
@@ -61,9 +64,13 @@ public class CurrentWeatherDataResponse {
     @Expose
     private WeatherSysData sysData;
 
+    public String getCurrentDate() {
+        return currentDate;
+    }
 
-
-
+    public void setCurrentDate(String currentDate) {
+        this.currentDate = currentDate;
+    }
 
     public Throwable getError() {
         return error;

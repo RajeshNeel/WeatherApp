@@ -2,13 +2,27 @@ package com.gaurav.weatherforecastapp.ui.forecastweather;
 
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.gaurav.weatherforecastapp.R;
+import com.gaurav.weatherforecastapp.retrofit.response.WeatherForecastDataResponse;
+import com.gaurav.weatherforecastapp.storage.SharedPreference;
+import com.gaurav.weatherforecastapp.utils.CommonMethods;
+import com.gaurav.weatherforecastapp.utils.Constants;
+
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -17,11 +31,33 @@ import com.gaurav.weatherforecastapp.R;
  */
 public class TomorrowForecastFragment extends Fragment {
 
+    private ForeCastWeatherViewModel foreCastWeatherViewModel;
+    private String cityName = "Bangalore";
+    private String weatherApiKey ="2de26709fcc9817162aa9909b587d145";
 
+    @BindView(R.id.textViewCurrentDateForecast) TextView textCurrentDateTime;
+    @BindView(R.id.textViewTemperatureForecast)  TextView textCurrentTemp;
+    @BindView(R.id.textViewFeelsTempForecast) TextView textFeelsTemp;
+    @BindView(R.id.textViewMinTempForecast) TextView textMinTemp;
+    @BindView(R.id.textViewMaxTempForecast) TextView textMaxTemp;
+    @BindView(R.id.textViewWeatherInfoForecast) TextView textWeatherInfoDesc;
+    @BindView(R.id.textViewHumidityValueForecast) TextView textHumidity;
+    @BindView(R.id.textViewPressureValueForecast) TextView textPressure;
+    @BindView(R.id.textViewUvIndexValueForecast) TextView textUvIndex;
+    @BindView(R.id.textViewWindValueForecast) TextView textWind;
+    @BindView(R.id.textViewSunriseTimeForecast) TextView textSunriseTime;
+    @BindView(R.id.textViewSunsetTimeForecast) TextView textSunsetTime;
 
 
     public TomorrowForecastFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        foreCastWeatherViewModel = new ViewModelProvider(this).get(ForeCastWeatherViewModel.class);
+
     }
 
 
@@ -36,10 +72,70 @@ public class TomorrowForecastFragment extends Fragment {
 
     }
 
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tomorrow_forecast, container, false);
+
+        foreCastWeatherViewModel = new ViewModelProvider(this).get(ForeCastWeatherViewModel.class);
+
+        View tomorrowForecastView = inflater.inflate(R.layout.fragment_tomorrow_forecast, container, false);
+
+        ButterKnife.bind(this,tomorrowForecastView);
+
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(cityName);
+
+        WeatherForecastDataResponse weatherForecastDataResponse =  SharedPreference.getWeatherSavedObjectFromPreference(getContext(),"WeatherForecastInfo", WeatherForecastDataResponse.class);
+
+        List<WeatherForecastDataResponse.WeatherForecastDataInfo> weatherForecastDataInfoList = weatherForecastDataResponse.getWeatherForecastDataList();
+
+        WeatherForecastDataResponse.WeatherForecastCityInfo weatherForecastCityInfo = weatherForecastDataResponse.getWeatherForecastCityInfo();
+
+        Log.v(Constants.TAG," forecast Tomorrow weather list size :"+weatherForecastDataInfoList.size());
+
+        int currentPosition=0;
+        for (WeatherForecastDataResponse.WeatherForecastDataInfo weatherForecastDataInfo : weatherForecastDataInfoList) {
+
+            currentPosition++;
+            Log.v(Constants.TAG," forecast date :"+weatherForecastDataInfo.getForecastDate()+" forecast dt :"+ weatherForecastDataInfo.getForecastDt());
+
+            WeatherForecastDataResponse.ForeCastWeatherMainData foreCastWeatherMainData = weatherForecastDataInfo.getForeCastWeatherMainData();
+
+            for(WeatherForecastDataResponse.ForecastWeatherData forecastWeatherData : weatherForecastDataInfo.getForecastWeatherDataList()){
+
+                Log.v(Constants.TAG," forecast weather data :"+" main :"+forecastWeatherData.getMain()+ " desc :"+forecastWeatherData.getDescription());
+
+                textWeatherInfoDesc.setText(forecastWeatherData.getMain());
+
+            }
+
+            WeatherForecastDataResponse.ForeCastWeatherCloudData foreCastWeatherCloudData = weatherForecastDataInfo.getForeCastWeatherCloudData();
+
+            WeatherForecastDataResponse.ForecastWeatherWindData forecastWeatherWindData = weatherForecastDataInfo.getForecastWeatherWindData();
+
+            Log.v(Constants.TAG,"cityName :"+ weatherForecastCityInfo.getForecastCityName()+" country :"+weatherForecastCityInfo.getForecastCountryName()
+                    +"mainData "+" temp :"+foreCastWeatherMainData.getTemp()+ "humidity :"+foreCastWeatherMainData.getHumidity()+"" +
+                    "pressure :"+foreCastWeatherMainData.getPressure());
+
+            if(currentPosition==7){
+
+                textCurrentDateTime.setText(weatherForecastDataInfoList.get(0).getForecastDate());
+                textCurrentTemp.setText(foreCastWeatherMainData.getTemp()+" \u00B0");
+                textFeelsTemp.setText("Feels like "+foreCastWeatherMainData.getTemp_kf().concat(" \u00B0"));
+                textMinTemp.setText(foreCastWeatherMainData.getMinTemp().concat(" \u00B0"));
+                textMaxTemp.setText(foreCastWeatherMainData.getMaxTemp().concat(" \u00B0"));
+
+                textHumidity.setText(foreCastWeatherMainData.getHumidity());
+                textPressure.setText(foreCastWeatherMainData.getPressure());
+                textWind.setText(forecastWeatherWindData.getWindSpeed().concat(" "+"Km"+"/"+"h"));
+            }
+        }
+
+        WeatherForecastDataResponse.ForecastWeatherCoordinate forecastWeatherCoordinate = weatherForecastCityInfo.getForecastWeatherCoordinate();
+
+
+        return tomorrowForecastView;
+
+
     }
 }

@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gaurav.weatherforecastapp.R;
@@ -23,6 +24,7 @@ import com.google.gson.Gson;
 
 import java.util.List;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
@@ -31,6 +33,19 @@ public class TodayForecastFragment extends Fragment {
     private ForeCastWeatherViewModel foreCastWeatherViewModel;
     private String cityName = "Bangalore";
     private String weatherApiKey ="2de26709fcc9817162aa9909b587d145";
+
+    @BindView(R.id.textViewCurrentDateForecast) TextView textCurrentDateTime;
+    @BindView(R.id.textViewTemperatureForecast)  TextView textCurrentTemp;
+    @BindView(R.id.textViewFeelsTempForecast) TextView textFeelsTemp;
+    @BindView(R.id.textViewMinTempForecast) TextView textMinTemp;
+    @BindView(R.id.textViewMaxTempForecast) TextView textMaxTemp;
+    @BindView(R.id.textViewWeatherInfoForecast) TextView textWeatherInfoDesc;
+    @BindView(R.id.textViewHumidityValueForecast) TextView textHumidity;
+    @BindView(R.id.textViewPressureValueForecast) TextView textPressure;
+    @BindView(R.id.textViewUvIndexValueForecast) TextView textUvIndex;
+    @BindView(R.id.textViewWindValueForecast) TextView textWind;
+    @BindView(R.id.textViewSunriseTimeForecast) TextView textSunriseTime;
+    @BindView(R.id.textViewSunsetTimeForecast) TextView textSunsetTime;
 
     public TodayForecastFragment() {
         // Required empty public constructor
@@ -70,7 +85,7 @@ public class TodayForecastFragment extends Fragment {
 
         if(CommonMethods.haveNetworkConnection(getActivity())) {
 
-            CommonMethods.createProgress(getActivity(), "Loading Forecast weather...");
+            CommonMethods.createProgress(getActivity(), "Loading Today Forecast weather...");
 
             foreCastWeatherViewModel.getForecastWeatherInformation(cityName,weatherApiKey).observe(getViewLifecycleOwner(), new Observer<WeatherForecastDataResponse>() {
                 @Override
@@ -105,6 +120,7 @@ public class TodayForecastFragment extends Fragment {
 
                                     Log.v(Constants.TAG,"forecast weather data :"+"main :"+forecastWeatherData.getMain()+ "desc :"+forecastWeatherData.getDescription());
 
+                                    textWeatherInfoDesc.setText(forecastWeatherData.getMain());
 
                                 }
 
@@ -116,6 +132,18 @@ public class TodayForecastFragment extends Fragment {
                                         +"mainData "+" temp :"+foreCastWeatherMainData.getTemp()+ "humidity :"+foreCastWeatherMainData.getHumidity()+"" +
 
                                         "pressure :"+foreCastWeatherMainData.getPressure());
+                                textCurrentDateTime.setText(weatherForecastDataInfoList.get(0).getForecastDate());
+                                textCurrentTemp.setText(foreCastWeatherMainData.getTemp()+" \u00B0");
+                                textFeelsTemp.setText(foreCastWeatherMainData.getTemp_kf().concat(" \u00B0"));
+                                textMinTemp.setText(foreCastWeatherMainData.getMinTemp().concat(" \u00B0"));
+                                textMaxTemp.setText(foreCastWeatherMainData.getMaxTemp().concat(" \u00B0"));
+
+                                textHumidity.setText(foreCastWeatherMainData.getHumidity());
+                                textPressure.setText(foreCastWeatherMainData.getPressure());
+                                textWind.setText(forecastWeatherWindData.getWindSpeed().concat(" "+"Km"+"/"+"h"));
+                              /*  textSunriseTime.setText(weatherSysData.getSunriseTime());
+                                textSunsetTime.setText(weatherSysData.getSunsetTime());*/
+
 
 
                             }

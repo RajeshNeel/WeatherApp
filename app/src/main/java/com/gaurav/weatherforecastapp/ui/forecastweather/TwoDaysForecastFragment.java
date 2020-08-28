@@ -130,7 +130,12 @@ public class TwoDaysForecastFragment extends Fragment {
                                     Log.v(Constants.TAG,"forecast weather data :"+"main :"+forecastWeatherData.getMain()+ "desc :"+forecastWeatherData.getDescription());
 
 
+                                    weatherForecastDataList.add(new WeatherForecastData(weatherForecastDataInfo.getForecastDate(),foreCastWeatherMainData.getTemp(),
+                                            forecastWeatherData.getMain()));
+
                                 }
+
+
 
                                 WeatherForecastDataResponse.ForeCastWeatherCloudData foreCastWeatherCloudData = weatherForecastDataInfo.getForeCastWeatherCloudData();
 

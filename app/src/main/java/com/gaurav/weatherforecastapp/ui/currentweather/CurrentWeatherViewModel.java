@@ -17,7 +17,11 @@ public class CurrentWeatherViewModel extends AndroidViewModel {
 
     public CurrentWeatherViewModel(@NonNull Application application) {
         super(application);
+        weatherDataRepository = new WeatherDataRepository(application);
+
     }
+
+
 
     public LiveData<CurrentWeatherDataResponse> getCurrentWeatherInformation(String cityName, String weatherApiKey) {
         return weatherDataRepository.getCurrentWeatherData(cityName,weatherApiKey);

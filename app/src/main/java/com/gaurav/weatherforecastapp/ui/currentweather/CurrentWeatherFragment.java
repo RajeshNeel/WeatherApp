@@ -38,9 +38,18 @@ public class CurrentWeatherFragment extends Fragment {
     private String cityName = "Bangalore";
     private String weatherApiKey ="2de26709fcc9817162aa9909b587d145";
 
-    @BindView(R.id.temp) TextView temp;
-    @BindView(R.id.speed)  TextView speed;
-    @BindView(R.id.humidity) TextView humidity;
+    @BindView(R.id.textViewCurrentDate) TextView textCurrentDateTime;
+    @BindView(R.id.textViewTemperature)  TextView textCurrentTemp;
+    @BindView(R.id.textViewFeelsTemp) TextView textFeelsTemp;
+    @BindView(R.id.textViewMinTemp) TextView textMinTemp;
+    @BindView(R.id.textViewMaxTemp) TextView textMaxTemp;
+    @BindView(R.id.textViewWeatherInfo) TextView textWeatherInfoDesc;
+    @BindView(R.id.textViewHumidityValue) TextView textHumidity;
+    @BindView(R.id.textViewPressureValue) TextView textPressure;
+    @BindView(R.id.textViewUvIndexValue) TextView textUvIndex;
+    @BindView(R.id.textViewWindValue) TextView textWind;
+    @BindView(R.id.textViewSunriseTime) TextView textSunriseTime;
+    @BindView(R.id.textViewSunsetTime) TextView textSunsetTime;
 
 
     @Override
@@ -59,8 +68,6 @@ public class CurrentWeatherFragment extends Fragment {
         currentWeatherViewModel = new ViewModelProvider(this).get(CurrentWeatherViewModel.class);
 
 
-
-
         View currentWeatherView = inflater.inflate(R.layout.fragment_current_weather, container, false);
 
         ButterKnife.bind(this,currentWeatherView);
@@ -73,7 +80,7 @@ public class CurrentWeatherFragment extends Fragment {
 
             CommonMethods.createProgress(getActivity(), "Loading Weather Data...");
 
-            currentWeatherViewModel.getCurrentWeatherInformation(cityName, weatherApiKey).observe(getViewLifecycleOwner(), new Observer<CurrentWeatherDataResponse>() {
+            currentWeatherViewModel.getCurrentWeatherInformation(cityName,weatherApiKey).observe(getViewLifecycleOwner(), new Observer<CurrentWeatherDataResponse>() {
                 @Override
                 public void onChanged(CurrentWeatherDataResponse currentWeatherDataResponse) {
                     CommonMethods.closeProgress();
@@ -102,9 +109,25 @@ public class CurrentWeatherFragment extends Fragment {
                             String cityName = currentWeatherDataResponse.getCityName();
                             String statusCode = currentWeatherDataResponse.getStatusCod();
                             String timeZone = currentWeatherDataResponse.getTimezone();
+                            String date = currentWeatherDataResponse.getCurrentDate();
+
 
                             Log.v(Constants.TAG," City :"+cityName+ "timeZone :"+timeZone+ " temp :"+weatherMainData.getTemp()+" humidity :"+weatherMainData.getHumidity()
                                     +" speed :"+weatherWindData.getWindSpeed());
+
+                            textCurrentDateTime.setText(CommonMethods.convertUnixToDate(Long.parseLong(currentWeatherDataResponse.getCurrentDate())).concat(" "+
+                                    Long.parseLong(currentWeatherDataResponse.getTimezone())));
+                            textCurrentTemp.setText(weatherMainData.getTemp()+" \u00B0");
+                            textFeelsTemp.setText(weatherMainData.getFeels_like().concat(" \u00B0"));
+                            textMinTemp.setText(weatherMainData.getMinTemp().concat(" \u00B0"));
+                            textMaxTemp.setText(weatherMainData.getMaxTemp().concat(" \u00B0"));
+                            textWeatherInfoDesc.setText(weatherDataList.get(0).getMain());
+                            textHumidity.setText(weatherMainData.getHumidity());
+                            textPressure.setText(weatherMainData.getPressure());
+                            textWind.setText(weatherWindData.getWindSpeed().concat(" "+"Km"+"/"+"h"));
+                            textSunriseTime.setText(weatherSysData.getSunriseTime());
+                            textSunsetTime.setText(weatherSysData.getSunsetTime());
+
 
                         }
 

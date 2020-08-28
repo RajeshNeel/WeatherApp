@@ -39,6 +39,12 @@ public class TwoDaysWeatherForecastAdapter extends RecyclerView.Adapter<TwoDaysW
     @Override
     public void onBindViewHolder(@NonNull TwoDaysForecastViewHolder holder, int position) {
 
+        holder.forecastDate.setText(weatherForecastDataList.get(position).getForecastDate());
+        holder.forecastTemp.setText(weatherForecastDataList.get(position).getForecastTemp());
+
+
+        holder.forecastWeatherDesc.setText(weatherForecastDataList.get(position).getForecastWeatherDesc());
+
     }
 
     @Override
