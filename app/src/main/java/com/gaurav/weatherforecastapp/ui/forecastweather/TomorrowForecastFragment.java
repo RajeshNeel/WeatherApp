@@ -85,53 +85,59 @@ public class TomorrowForecastFragment extends Fragment {
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(cityName);
 
-        WeatherForecastDataResponse weatherForecastDataResponse =  SharedPreference.getWeatherSavedObjectFromPreference(getContext(),"WeatherForecastInfo", WeatherForecastDataResponse.class);
+        WeatherForecastDataResponse.WeatherForecastCityInfo weatherForecastCityInfo = null;
+        try {
+            WeatherForecastDataResponse weatherForecastDataResponse =  SharedPreference.getWeatherSavedObjectFromPreference(getContext(),"WeatherForecastInfo", WeatherForecastDataResponse.class);
 
-        List<WeatherForecastDataResponse.WeatherForecastDataInfo> weatherForecastDataInfoList = weatherForecastDataResponse.getWeatherForecastDataList();
+            List<WeatherForecastDataResponse.WeatherForecastDataInfo> weatherForecastDataInfoList = weatherForecastDataResponse.getWeatherForecastDataList();
 
-        WeatherForecastDataResponse.WeatherForecastCityInfo weatherForecastCityInfo = weatherForecastDataResponse.getWeatherForecastCityInfo();
+            weatherForecastCityInfo = weatherForecastDataResponse.getWeatherForecastCityInfo();
 
-        Log.v(Constants.TAG," forecast Tomorrow weather list size :"+weatherForecastDataInfoList.size());
+            Log.v(Constants.TAG," forecast Tomorrow weather list size :"+weatherForecastDataInfoList.size());
 
-        int currentPosition=0;
-        for (WeatherForecastDataResponse.WeatherForecastDataInfo weatherForecastDataInfo : weatherForecastDataInfoList) {
+            int currentPosition=0;
+            for (WeatherForecastDataResponse.WeatherForecastDataInfo weatherForecastDataInfo : weatherForecastDataInfoList) {
 
-            currentPosition++;
-            Log.v(Constants.TAG," forecast date :"+weatherForecastDataInfo.getForecastDate()+" forecast dt :"+ weatherForecastDataInfo.getForecastDt());
+                currentPosition++;
+                Log.v(Constants.TAG," forecast date :"+weatherForecastDataInfo.getForecastDate()+" forecast dt :"+ weatherForecastDataInfo.getForecastDt());
 
-            WeatherForecastDataResponse.ForeCastWeatherMainData foreCastWeatherMainData = weatherForecastDataInfo.getForeCastWeatherMainData();
+                WeatherForecastDataResponse.ForeCastWeatherMainData foreCastWeatherMainData = weatherForecastDataInfo.getForeCastWeatherMainData();
 
-            for(WeatherForecastDataResponse.ForecastWeatherData forecastWeatherData : weatherForecastDataInfo.getForecastWeatherDataList()){
+                for(WeatherForecastDataResponse.ForecastWeatherData forecastWeatherData : weatherForecastDataInfo.getForecastWeatherDataList()){
 
-                Log.v(Constants.TAG," forecast weather data :"+" main :"+forecastWeatherData.getMain()+ " desc :"+forecastWeatherData.getDescription());
+                    Log.v(Constants.TAG," forecast weather data :"+" main :"+forecastWeatherData.getMain()+ " desc :"+forecastWeatherData.getDescription());
 
-                textWeatherInfoDesc.setText(forecastWeatherData.getMain());
+                    textWeatherInfoDesc.setText(forecastWeatherData.getMain());
+
+                }
+
+                WeatherForecastDataResponse.ForeCastWeatherCloudData foreCastWeatherCloudData = weatherForecastDataInfo.getForeCastWeatherCloudData();
+
+                WeatherForecastDataResponse.ForecastWeatherWindData forecastWeatherWindData = weatherForecastDataInfo.getForecastWeatherWindData();
+
+                Log.v(Constants.TAG,"cityName :"+ weatherForecastCityInfo.getForecastCityName()+" country :"+weatherForecastCityInfo.getForecastCountryName()
+                        +"mainData "+" temp :"+foreCastWeatherMainData.getTemp()+ "humidity :"+foreCastWeatherMainData.getHumidity()+"" +
+                        "pressure :"+foreCastWeatherMainData.getPressure());
+
+                if(currentPosition==7){
+
+                    textCurrentDateTime.setText(weatherForecastDataInfoList.get(0).getForecastDate());
+                    textCurrentTemp.setText(foreCastWeatherMainData.getTemp()+" \u00B0");
+                    textFeelsTemp.setText("Feels like "+foreCastWeatherMainData.getTemp_kf().concat(" \u00B0"));
+                    textMinTemp.setText(foreCastWeatherMainData.getMinTemp().concat(" \u00B0"));
+                    textMaxTemp.setText(foreCastWeatherMainData.getMaxTemp().concat(" \u00B0"));
+
+                    textHumidity.setText(foreCastWeatherMainData.getHumidity());
+                    textPressure.setText(foreCastWeatherMainData.getPressure());
+                    textWind.setText(forecastWeatherWindData.getWindSpeed().concat(" "+"Km"+"/"+"h"));
+                }
+                WeatherForecastDataResponse.ForecastWeatherCoordinate forecastWeatherCoordinate = weatherForecastCityInfo.getForecastWeatherCoordinate();
 
             }
-
-            WeatherForecastDataResponse.ForeCastWeatherCloudData foreCastWeatherCloudData = weatherForecastDataInfo.getForeCastWeatherCloudData();
-
-            WeatherForecastDataResponse.ForecastWeatherWindData forecastWeatherWindData = weatherForecastDataInfo.getForecastWeatherWindData();
-
-            Log.v(Constants.TAG,"cityName :"+ weatherForecastCityInfo.getForecastCityName()+" country :"+weatherForecastCityInfo.getForecastCountryName()
-                    +"mainData "+" temp :"+foreCastWeatherMainData.getTemp()+ "humidity :"+foreCastWeatherMainData.getHumidity()+"" +
-                    "pressure :"+foreCastWeatherMainData.getPressure());
-
-            if(currentPosition==7){
-
-                textCurrentDateTime.setText(weatherForecastDataInfoList.get(0).getForecastDate());
-                textCurrentTemp.setText(foreCastWeatherMainData.getTemp()+" \u00B0");
-                textFeelsTemp.setText("Feels like "+foreCastWeatherMainData.getTemp_kf().concat(" \u00B0"));
-                textMinTemp.setText(foreCastWeatherMainData.getMinTemp().concat(" \u00B0"));
-                textMaxTemp.setText(foreCastWeatherMainData.getMaxTemp().concat(" \u00B0"));
-
-                textHumidity.setText(foreCastWeatherMainData.getHumidity());
-                textPressure.setText(foreCastWeatherMainData.getPressure());
-                textWind.setText(forecastWeatherWindData.getWindSpeed().concat(" "+"Km"+"/"+"h"));
-            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        WeatherForecastDataResponse.ForecastWeatherCoordinate forecastWeatherCoordinate = weatherForecastCityInfo.getForecastWeatherCoordinate();
 
 
         return tomorrowForecastView;

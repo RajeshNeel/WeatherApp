@@ -6,6 +6,7 @@ package com.gaurav.weatherforecastapp.utils;
 public class Constants {
     public static String TAG = "WeatherApp";
     public static String weatherApiKey ="2de26709fcc9817162aa9909b587d145";
-    private String cityName = "Bengaluru";
+    public static String defaultCityName = "Bangalore";
+    public static String googleMapsApiKey = "AIzaSyAZ8Xj-CPVCkcWV8wWEdyYeyj8MrAokzro";
 
 }
