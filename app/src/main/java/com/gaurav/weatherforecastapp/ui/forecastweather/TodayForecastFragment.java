@@ -91,14 +91,9 @@ public class TodayForecastFragment extends Fragment {
 
         ButterKnife.bind(this,todayForecastView);
 
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(cityName);
-
+         setHasOptionsMenu(true);
 
         getTodayWeatherData(Constants.defaultCityName,Constants.weatherApiKey);
-
-
-
-
 
         return todayForecastView;
     }
@@ -156,6 +151,7 @@ public class TodayForecastFragment extends Fragment {
                                         "pressure :"+foreCastWeatherMainData.getPressure());
 
                                 ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(weatherForecastCityInfo.getForecastCityName());
+                                Constants.defaultCityName = weatherForecastCityInfo.getForecastCityName();
 
 
                                 textCurrentDateTime.setText(weatherForecastDataInfoList.get(0).getForecastDate());
@@ -212,6 +208,7 @@ public class TodayForecastFragment extends Fragment {
         inflater.inflate(R.menu.main, menu);
 
         MenuItem menuItem = menu.findItem(R.id.action_search);
+        menuItem.setVisible(false);
 
         SearchManager searchManager =
                 (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);

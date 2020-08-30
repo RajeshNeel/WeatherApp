@@ -163,6 +163,7 @@ public class CurrentWeatherFragment extends Fragment {
 
                            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(currentWeatherDataResponse.getCityName());
                            textNavLocation.setText(currentWeatherDataResponse.getCityName());
+                           Constants.defaultCityName =  currentWeatherDataResponse.getCityName();
 
                            textCurrentDateTime.setText(CommonMethods.convertUnixToDate(Long.parseLong(currentWeatherDataResponse.getCurrentDate())).concat(" "+
                                    Long.parseLong(currentWeatherDataResponse.getTimezone())));

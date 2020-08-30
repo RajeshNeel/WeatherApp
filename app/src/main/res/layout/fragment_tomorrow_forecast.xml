@@ -67,10 +67,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="60dp"
                 android:text="Feels like 30\u00B0"
-                android:textSize="20sp"
                 android:textColor="@color/white_color"
+                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="@+id/textViewTemperatureForecast"
-                app:layout_constraintHorizontal_bias="0.417"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/textViewMinTempForecast"
                 app:layout_constraintTop_toBottomOf="@+id/textViewTemperatureForecast" />
 

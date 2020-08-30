@@ -1,8 +1,13 @@
 package com.gaurav.weatherforecastapp.ui.forecastweather;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
+import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -11,6 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -78,6 +86,7 @@ public class TwoDaysForecastFragment extends Fragment {
         View twoDaysForecastView = inflater.inflate(R.layout.fragment_two_days_forecast, container, false);
 
         ButterKnife.bind(this,twoDaysForecastView);
+        setHasOptionsMenu(true);
 
         weatherForecastDataList = new ArrayList<>();
 
@@ -91,12 +100,22 @@ public class TwoDaysForecastFragment extends Fragment {
         twoDaysWeatherForecastAdapter.notifyDataSetChanged();
 
 
+        getWeatherForecastData(Constants.defaultCityName,Constants.weatherApiKey);
+
+
+
+
+        return twoDaysForecastView;
+    }
+
+    private void getWeatherForecastData(String defaultCityName, String weatherApiKey) {
+
 
         if(CommonMethods.haveNetworkConnection(getActivity())) {
 
             CommonMethods.createProgress(getActivity(), "Loading Forecast weather...");
 
-            foreCastWeatherViewModel.getForecastWeatherInformation(cityName,weatherApiKey).observe(getViewLifecycleOwner(), new Observer<WeatherForecastDataResponse>() {
+            foreCastWeatherViewModel.getForecastWeatherInformation(defaultCityName,weatherApiKey).observe(getViewLifecycleOwner(), new Observer<WeatherForecastDataResponse>() {
                 @Override
                 public void onChanged(WeatherForecastDataResponse weatherForecastDataResponse) {
                     CommonMethods.closeProgress();
@@ -172,8 +191,45 @@ public class TwoDaysForecastFragment extends Fragment {
 
         }
 
+    }
 
 
-        return twoDaysForecastView;
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        //getMenuInflater().inflate(R.menu.main, menu);
+        inflater.inflate(R.menu.main, menu);
+
+        MenuItem menuItem = menu.findItem(R.id.action_search);
+        menuItem.setVisible(false);
+
+        SearchManager searchManager =
+                (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
+
+        searchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.v("Current Weather clicked","search View");
+
+
+            }
+        });
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Log.v(Constants.TAG,"typed search text :"+query);
+                searchView.onActionViewCollapsed();
+
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Log.v(Constants.TAG,"typed search text char :"+newText);
+
+                return true;
+            }
+        });
     }
 }

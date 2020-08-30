@@ -1,14 +1,22 @@
 package com.gaurav.weatherforecastapp.ui.forecastweather;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -82,6 +90,8 @@ public class TomorrowForecastFragment extends Fragment {
         View tomorrowForecastView = inflater.inflate(R.layout.fragment_tomorrow_forecast, container, false);
 
         ButterKnife.bind(this,tomorrowForecastView);
+        setHasOptionsMenu(true);
+
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(cityName);
 
@@ -157,5 +167,44 @@ public class TomorrowForecastFragment extends Fragment {
         return tomorrowForecastView;
 
 
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        //getMenuInflater().inflate(R.menu.main, menu);
+        inflater.inflate(R.menu.main, menu);
+
+        MenuItem menuItem = menu.findItem(R.id.action_search);
+        menuItem.setVisible(false);
+
+        SearchManager searchManager =
+                (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
+
+        searchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.v("Current Weather clicked","search View");
+
+
+            }
+        });
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Log.v(Constants.TAG,"typed search text :"+query);
+                searchView.onActionViewCollapsed();
+
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Log.v(Constants.TAG,"typed search text char :"+newText);
+
+                return true;
+            }
+        });
     }
 }
