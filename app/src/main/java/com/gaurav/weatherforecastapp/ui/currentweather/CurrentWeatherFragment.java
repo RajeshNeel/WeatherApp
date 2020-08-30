@@ -109,7 +109,6 @@ public class CurrentWeatherFragment extends Fragment {
       //   textNavLocation = (TextView)navHeaderView.findViewById(R.id.textViewLocation);
     //    imgvw .setImageResource();
 
-
         fields = Arrays.asList(Place.Field.ID, Place.Field.NAME);
 
         return currentWeatherView;
@@ -167,16 +166,26 @@ public class CurrentWeatherFragment extends Fragment {
 
                            textCurrentDateTime.setText(CommonMethods.convertUnixToDate(Long.parseLong(currentWeatherDataResponse.getCurrentDate())).concat(" "+
                                    Long.parseLong(currentWeatherDataResponse.getTimezone())));
-                           textCurrentTemp.setText(weatherMainData.getTemp()+" \u00B0");
-                           textFeelsTemp.setText(weatherMainData.getFeels_like().concat(" \u00B0"));
-                           textMinTemp.setText(weatherMainData.getMinTemp().concat(" \u00B0"));
-                           textMaxTemp.setText(weatherMainData.getMaxTemp().concat(" \u00B0"));
+
+                           float currntTemp = CommonMethods.convertKelvinToCelsius(Float.parseFloat(weatherMainData.getTemp()));
+                           int currentTemp = (int) currntTemp;
+                           float feelsTemp = CommonMethods.convertKelvinToCelsius(Float.parseFloat(weatherMainData.getFeels_like()));
+                           int feels_like_temp = (int) feelsTemp;
+                           float minTmp = CommonMethods.convertKelvinToCelsius(Float.parseFloat(weatherMainData.getMinTemp()));
+                           int minTemp = (int)minTmp;
+                           float maxTmp = CommonMethods.convertKelvinToCelsius(Float.parseFloat(weatherMainData.getMaxTemp()));
+                           int maxTemp = (int)maxTmp;
+
+                           textCurrentTemp.setText(String.valueOf(currentTemp)+" \u00B0");
+                           textFeelsTemp.setText("feels like "+String.valueOf(feels_like_temp).concat(" \u00B0"));
+                           textMinTemp.setText(String.valueOf(minTemp).concat(" \u00B0"));
+                           textMaxTemp.setText(String.valueOf(maxTemp).concat(" \u00B0"));
                            textWeatherInfoDesc.setText(weatherDataList.get(0).getMain());
-                           textHumidity.setText(weatherMainData.getHumidity());
-                           textPressure.setText(weatherMainData.getPressure());
+                           textHumidity.setText(weatherMainData.getHumidity()+"%");
+                           textPressure.setText(weatherMainData.getPressure()+" mmHg");
                            textWind.setText(weatherWindData.getWindSpeed().concat(" "+"Km"+"/"+"h"));
-                           textSunriseTime.setText(weatherSysData.getSunriseTime());
-                           textSunsetTime.setText(weatherSysData.getSunsetTime());
+                           textSunriseTime.setText(String.valueOf(CommonMethods.convertUnixToHour(Long.parseLong(weatherSysData.getSunriseTime()))));
+                           textSunsetTime.setText(String.valueOf(CommonMethods.convertUnixToHour(Long.parseLong(weatherSysData.getSunsetTime()))));
 
 
                        }

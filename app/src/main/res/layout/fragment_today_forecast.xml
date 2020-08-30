@@ -43,7 +43,7 @@
                 android:text="27\u00B0"
                 android:textStyle="normal"
                 android:textColor="@color/white_color"
-                android:textSize="90sp"
+                android:textSize="70sp"
                 app:layout_constraintStart_toStartOf="@+id/textViewCurrentDateForecast"
                 app:layout_constraintTop_toBottomOf="@+id/textViewCurrentDateForecast" />
 
@@ -63,13 +63,13 @@
                 android:id="@+id/textViewFeelsTempForecast"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="60dp"
+                android:layout_marginTop="50dp"
                 android:text="Feels like 30\u00B0"
                 android:textSize="20sp"
                 android:textColor="@color/white_color"
                 app:layout_constraintEnd_toEndOf="@+id/textViewTemperatureForecast"
                 app:layout_constraintHorizontal_bias="0.417"
-                app:layout_constraintStart_toStartOf="@+id/textViewTemperatureForecast"
+                app:layout_constraintStart_toStartOf="@+id/textViewMinTempForecast"
                 app:layout_constraintTop_toBottomOf="@+id/textViewTemperatureForecast" />
 
             <TextView
@@ -123,23 +123,24 @@
                 android:id="@+id/textViewWeatherInfoForecast"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="40dp"
-                android:layout_marginRight="40dp"
+                android:layout_marginEnd="60dp"
+                android:layout_marginRight="60dp"
                 android:text="Overcast"
-                android:textSize="30sp"
+                android:textSize="35sp"
                 android:textColor="@color/white_color"
                 app:layout_constraintBottom_toBottomOf="@+id/textViewMaxTempForecast"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/textViewFeelsTempForecast" />
 
-            <Space
+            <View
                 android:id="@+id/space"
                 android:layout_width="match_parent"
-                android:layout_height="3dp"
+                android:layout_height="2dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginLeft="20dp"
+                android:layout_marginEnd="20dp"
                 android:layout_marginTop="40dp"
-                android:background="@color/white_color"
+                android:background="@color/round_stroke_color"
                 app:layout_constraintStart_toStartOf="@+id/textViewMaxTempForecast"
                 app:layout_constraintTop_toBottomOf="@+id/textViewMaxTempForecast" />
 
@@ -149,7 +150,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_marginLeft="4dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="30dp"
                 android:text="Current Details"
                 android:textSize="25sp"
                 android:textStyle="normal"
@@ -238,14 +239,15 @@
                 app:layout_constraintTop_toTopOf="@+id/textViewUvIndexForecast" />
 
 
-            <Space
+            <View
                 android:id="@+id/spaceCurrentDetails"
                 android:layout_width="match_parent"
-                android:layout_height="3dp"
+                android:layout_height="2dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginLeft="20dp"
+                android:layout_marginEnd="20dp"
                 android:layout_marginTop="40dp"
-                android:background="@color/white_color"
+                android:background="@color/round_stroke_color"
                 app:layout_constraintStart_toStartOf="@+id/textViewUvIndexForecast"
                 app:layout_constraintTop_toBottomOf="@+id/textViewUvIndexForecast" />
 
@@ -255,7 +257,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_marginLeft="4dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="30dp"
                 android:text="Wind"
                 android:textSize="25sp"
                 android:textStyle="normal"
@@ -269,7 +271,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_marginLeft="4dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="10dp"
                 android:text="16"
                 android:textSize="30sp"
                 android:textStyle="normal"
@@ -277,14 +279,16 @@
                 app:layout_constraintStart_toStartOf="@+id/textViewWindForecast"
                 app:layout_constraintTop_toBottomOf="@+id/textViewWindForecast"/>
 
-            <Space
+            <View
                 android:id="@+id/spaceWindDetails"
                 android:layout_width="match_parent"
-                android:layout_height="3dp"
+                android:layout_height="2dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginLeft="20dp"
-                android:layout_marginTop="40dp"
-                android:background="@color/white_color"
+                android:layout_marginTop="30dp"
+                android:visibility="gone"
+                android:layout_marginEnd="20dp"
+                android:background="@color/round_stroke_color"
                 app:layout_constraintStart_toStartOf="@+id/textViewWindValueForecast"
                 app:layout_constraintTop_toBottomOf="@+id/textViewWindValueForecast" />
 
@@ -294,9 +298,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_marginLeft="4dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="20dp"
                 android:text="@string/sunrise_text"
                 android:textSize="25sp"
+                android:visibility="gone"
+
                 android:textStyle="normal"
                 android:textColor="@color/white_color"
                 app:layout_constraintStart_toStartOf="@+id/textViewWindForecast"
@@ -311,7 +317,8 @@
                 android:layout_marginTop="40dp"
                 android:text="Sunrise"
                 android:textSize="25sp"
-                app:layout_constraintHorizontal_weight="1"
+                android:visibility="gone"
+
                 android:textStyle="normal"
                 android:textColor="@color/white_color"
                 app:layout_constraintStart_toStartOf="@+id/textViewWindForecast"
@@ -323,6 +330,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="2dp"
                 android:layout_marginLeft="2dp"
+                android:visibility="gone"
+
                 android:src="@drawable/ic_arrow_upward"
                 app:layout_constraintBottom_toBottomOf="@+id/textViewSunriseForecast"
                 app:layout_constraintStart_toEndOf="@+id/textViewSunriseForecast"
@@ -336,6 +345,8 @@
                 android:layout_marginLeft="4dp"
                 android:layout_marginTop="10dp"
                 android:text="06:01 AM"
+                android:visibility="gone"
+
                 android:textSize="25sp"
                 app:layout_constraintHorizontal_weight="1"
                 android:textStyle="normal"
@@ -350,8 +361,9 @@
                 android:layout_height="wrap_content"
                 android:text="Sunset"
                 android:textSize="20sp"
-                app:layout_constraintHorizontal_weight="1"
-                android:layout_marginStart="5dp"
+                android:visibility="gone"
+
+                android:layout_marginStart="175dp"
                 android:textColor="@color/white_color"
                 app:layout_constraintBottom_toBottomOf="@+id/textViewSunriseForecast"
                 app:layout_constraintTop_toTopOf="@+id/textViewSunriseForecast"
@@ -363,9 +375,11 @@
                 android:id="@+id/imageViewUpWardSunset"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="2dp"
-                android:layout_marginLeft="2dp"
-                android:src="@drawable/ic_arrow_upward"
+                android:layout_marginEnd="36dp"
+                android:src="@drawable/ic_arrow_downward"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:visibility="gone"
+
                 app:layout_constraintBottom_toBottomOf="@+id/textViewSunsetForecast"
                 app:layout_constraintStart_toEndOf="@+id/textViewSunsetForecast"
                 app:layout_constraintTop_toTopOf="@+id/textViewSunsetForecast" />
@@ -377,6 +391,8 @@
                 android:layout_marginStart="4dp"
                 android:layout_marginLeft="4dp"
                 android:layout_marginTop="10dp"
+                android:visibility="gone"
+
                 android:text="06:45 PM"
                 android:textSize="25sp"
                 app:layout_constraintHorizontal_weight="1"

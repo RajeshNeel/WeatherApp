@@ -119,16 +119,30 @@ public class TomorrowForecastFragment extends Fragment {
                         +"mainData "+" temp :"+foreCastWeatherMainData.getTemp()+ "humidity :"+foreCastWeatherMainData.getHumidity()+"" +
                         "pressure :"+foreCastWeatherMainData.getPressure());
 
+                ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(weatherForecastCityInfo.getForecastCityName());
+
+
                 if(currentPosition==7){
 
                     textCurrentDateTime.setText(weatherForecastDataInfoList.get(0).getForecastDate());
-                    textCurrentTemp.setText(foreCastWeatherMainData.getTemp()+" \u00B0");
-                    textFeelsTemp.setText("Feels like "+foreCastWeatherMainData.getTemp_kf().concat(" \u00B0"));
-                    textMinTemp.setText(foreCastWeatherMainData.getMinTemp().concat(" \u00B0"));
-                    textMaxTemp.setText(foreCastWeatherMainData.getMaxTemp().concat(" \u00B0"));
 
-                    textHumidity.setText(foreCastWeatherMainData.getHumidity());
-                    textPressure.setText(foreCastWeatherMainData.getPressure());
+                    float currntTemp = CommonMethods.convertKelvinToCelsius(Float.parseFloat(foreCastWeatherMainData.getTemp()));
+                    int currentTemp = (int) currntTemp;
+                    float feelsTemp = CommonMethods.convertKelvinToCelsius(Float.parseFloat(foreCastWeatherMainData.getTemp_kf()));
+                    int feels_like_temp = (int) feelsTemp;
+                    float minTmp = CommonMethods.convertKelvinToCelsius(Float.parseFloat(foreCastWeatherMainData.getMinTemp()));
+                    int minTemp = (int)minTmp;
+                    float maxTmp = CommonMethods.convertKelvinToCelsius(Float.parseFloat(foreCastWeatherMainData.getMaxTemp()));
+                    int maxTemp = (int)maxTmp;
+
+
+                    textCurrentTemp.setText(currentTemp+" \u00B0");
+                    textFeelsTemp.setText("feels like "+String.valueOf(feels_like_temp).concat(" \u00B0"));
+                    textMinTemp.setText(String.valueOf(minTemp).concat(" \u00B0"));
+                    textMaxTemp.setText(String.valueOf(maxTemp).concat(" \u00B0"));
+
+                    textHumidity.setText(foreCastWeatherMainData.getHumidity()+"%");
+                    textPressure.setText(foreCastWeatherMainData.getPressure()+" mmHg");
                     textWind.setText(forecastWeatherWindData.getWindSpeed().concat(" "+"Km"+"/"+"h"));
                 }
                 WeatherForecastDataResponse.ForecastWeatherCoordinate forecastWeatherCoordinate = weatherForecastCityInfo.getForecastWeatherCoordinate();

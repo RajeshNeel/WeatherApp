@@ -1,15 +1,24 @@
 package com.gaurav.weatherforecastapp.ui.forecastweather;
 
+import android.app.SearchManager;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -20,6 +29,8 @@ import com.gaurav.weatherforecastapp.retrofit.response.WeatherForecastDataRespon
 import com.gaurav.weatherforecastapp.storage.SharedPreference;
 import com.gaurav.weatherforecastapp.utils.CommonMethods;
 import com.gaurav.weatherforecastapp.utils.Constants;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.gson.Gson;
 
 import java.util.List;
@@ -83,11 +94,22 @@ public class TodayForecastFragment extends Fragment {
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(cityName);
 
 
+        getTodayWeatherData(Constants.defaultCityName,Constants.weatherApiKey);
+
+
+
+
+
+        return todayForecastView;
+    }
+
+    private void getTodayWeatherData(String defaultCityName, String weatherApiKey) {
+
         if(CommonMethods.haveNetworkConnection(getActivity())) {
 
             CommonMethods.createProgress(getActivity(), "Loading Today Forecast weather...");
 
-            foreCastWeatherViewModel.getForecastWeatherInformation(cityName,weatherApiKey).observe(getViewLifecycleOwner(), new Observer<WeatherForecastDataResponse>() {
+            foreCastWeatherViewModel.getForecastWeatherInformation(defaultCityName,weatherApiKey).observe(getViewLifecycleOwner(), new Observer<WeatherForecastDataResponse>() {
                 @Override
                 public void onChanged(WeatherForecastDataResponse weatherForecastDataResponse) {
                     CommonMethods.closeProgress();
@@ -132,19 +154,30 @@ public class TodayForecastFragment extends Fragment {
                                         +"mainData "+" temp :"+foreCastWeatherMainData.getTemp()+ "humidity :"+foreCastWeatherMainData.getHumidity()+"" +
 
                                         "pressure :"+foreCastWeatherMainData.getPressure());
+
+                                ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(weatherForecastCityInfo.getForecastCityName());
+
+
                                 textCurrentDateTime.setText(weatherForecastDataInfoList.get(0).getForecastDate());
-                                textCurrentTemp.setText(foreCastWeatherMainData.getTemp()+" \u00B0");
-                                textFeelsTemp.setText(foreCastWeatherMainData.getTemp_kf().concat(" \u00B0"));
-                                textMinTemp.setText(foreCastWeatherMainData.getMinTemp().concat(" \u00B0"));
-                                textMaxTemp.setText(foreCastWeatherMainData.getMaxTemp().concat(" \u00B0"));
 
-                                textHumidity.setText(foreCastWeatherMainData.getHumidity());
-                                textPressure.setText(foreCastWeatherMainData.getPressure());
+                                float currntTemp = CommonMethods.convertKelvinToCelsius(Float.parseFloat(foreCastWeatherMainData.getTemp()));
+                                int currentTemp = (int) currntTemp;
+                                float feelsTemp = CommonMethods.convertKelvinToCelsius(Float.parseFloat(foreCastWeatherMainData.getTemp_kf()));
+                                int feels_like_temp = (int) feelsTemp;
+                                float minTmp = CommonMethods.convertKelvinToCelsius(Float.parseFloat(foreCastWeatherMainData.getMinTemp()));
+                                int minTemp = (int)minTmp;
+                                float maxTmp = CommonMethods.convertKelvinToCelsius(Float.parseFloat(foreCastWeatherMainData.getMaxTemp()));
+                                int maxTemp = (int)maxTmp;
+
+
+                                textCurrentTemp.setText(currentTemp+" \u00B0");
+                                textFeelsTemp.setText("feels like "+String.valueOf(feels_like_temp).concat(" \u00B0"));
+                                textMinTemp.setText(String.valueOf(minTemp).concat(" \u00B0"));
+                                textMaxTemp.setText(String.valueOf(maxTemp).concat(" \u00B0"));
+
+                                textHumidity.setText(foreCastWeatherMainData.getHumidity()+"%");
+                                textPressure.setText(foreCastWeatherMainData.getPressure()+" mmHg");
                                 textWind.setText(forecastWeatherWindData.getWindSpeed().concat(" "+"Km"+"/"+"h"));
-                              /*  textSunriseTime.setText(weatherSysData.getSunriseTime());
-                                textSunsetTime.setText(weatherSysData.getSunsetTime());*/
-
-
 
                             }
 
@@ -153,7 +186,7 @@ public class TodayForecastFragment extends Fragment {
                         }
                         else {
                             Toast.makeText(getActivity(), "Error is " +weatherForecastDataResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                            Log.e(Constants.TAG, " Get Current weatherData  " + weatherForecastDataResponse.getMessage());
+                            Log.e(Constants.TAG, " Get Forecast weatherData  " + weatherForecastDataResponse.getMessage());
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -169,6 +202,45 @@ public class TodayForecastFragment extends Fragment {
         }
 
 
-        return todayForecastView;
+
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        //getMenuInflater().inflate(R.menu.main, menu);
+        inflater.inflate(R.menu.main, menu);
+
+        MenuItem menuItem = menu.findItem(R.id.action_search);
+
+        SearchManager searchManager =
+                (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
+
+        searchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.v("Current Weather clicked","search View");
+
+
+            }
+        });
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Log.v(Constants.TAG,"typed search text :"+query);
+                getTodayWeatherData(query,Constants.weatherApiKey);
+                searchView.onActionViewCollapsed();
+
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Log.v(Constants.TAG,"typed search text char :"+newText);
+
+                return true;
+            }
+        });
     }
 }

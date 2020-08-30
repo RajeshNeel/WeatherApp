@@ -12,8 +12,10 @@ import androidx.core.content.ContextCompat;
 
 import com.gaurav.weatherforecastapp.R;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import dmax.dialog.SpotsDialog;
 
@@ -79,16 +81,31 @@ public class CommonMethods {
 
     public static String convertUnixToDate(long date){
         Date date1 = new Date(date*1000L);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm dd EEE MM YYYY");
-        String formattedDate = simpleDateFormat.format(date1);
+        DateFormat df = DateFormat.getDateTimeInstance(DateFormat.LONG,DateFormat.DEFAULT);
+      //  SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm dd EEE MM YYYY");
+        String formattedDate = df.format(date1);
         return formattedDate;
     }
 
     public static String convertUnixToHour(long dt){
         Date date1 = new Date(dt*1000L);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm a");
         String formattedDate = simpleDateFormat.format(date1);
+      //  formattedDate.rep
         return formattedDate;
+    }
+
+    public static float convertFahrenheitToCelsius(float fahrenheit) {
+        return ((fahrenheit - 32) * 5 / 9);
+    }
+
+    public static float convertCelsiusToFahrenheit(float celsius) {
+        return ((celsius * 9) / 5) + 32;
+    }
+
+    public static float convertKelvinToCelsius(float kelvin) {
+
+        return (float) (kelvin - 273.15);
     }
 
 

@@ -45,7 +45,7 @@
                 android:text="27\u00B0"
                 android:textStyle="normal"
                 android:textColor="@color/white_color"
-                android:textSize="50sp"
+                android:textSize="70sp"
                 app:layout_constraintStart_toStartOf="@+id/textViewCurrentDate"
                 app:layout_constraintTop_toBottomOf="@+id/textViewCurrentDate" />
 
@@ -65,13 +65,13 @@
                 android:id="@+id/textViewFeelsTemp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="60dp"
+                android:layout_marginTop="50dp"
                 android:text="Feels like 30\u00B0"
                 android:textSize="20sp"
                 android:textColor="@color/white_color"
                 app:layout_constraintEnd_toEndOf="@+id/textViewTemperature"
                 app:layout_constraintHorizontal_bias="0.417"
-                app:layout_constraintStart_toStartOf="@+id/textViewTemperature"
+                app:layout_constraintStart_toStartOf="@+id/textViewMinTemp"
                 app:layout_constraintTop_toBottomOf="@+id/textViewTemperature" />
 
             <TextView
@@ -125,23 +125,24 @@
                 android:id="@+id/textViewWeatherInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="40dp"
-                android:layout_marginRight="40dp"
+                android:layout_marginEnd="60dp"
+                android:layout_marginRight="60dp"
                 android:text="Overcast"
-                android:textSize="30sp"
+                android:textSize="35sp"
                 android:textColor="@color/white_color"
                 app:layout_constraintBottom_toBottomOf="@+id/textViewMaxTemp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/textViewFeelsTemp" />
 
-            <Space
+            <View
                 android:id="@+id/space"
                 android:layout_width="match_parent"
-                android:layout_height="3dp"
+                android:layout_height="2dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginLeft="20dp"
+                android:layout_marginEnd="20dp"
                 android:layout_marginTop="40dp"
-                android:background="@color/white_color"
+                android:background="@color/round_stroke_color"
                 app:layout_constraintStart_toStartOf="@+id/textViewMaxTemp"
                 app:layout_constraintTop_toBottomOf="@+id/textViewMaxTemp" />
 
@@ -151,7 +152,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_marginLeft="4dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="30dp"
                 android:text="Current Details"
                 android:textSize="25sp"
                 android:textStyle="normal"
@@ -240,14 +241,15 @@
                 app:layout_constraintTop_toTopOf="@+id/textViewUvIndex" />
 
 
-            <Space
+            <View
                 android:id="@+id/spaceCurrentDetails"
                 android:layout_width="match_parent"
-                android:layout_height="3dp"
+                android:layout_height="2dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginLeft="20dp"
+                android:layout_marginEnd="20dp"
                 android:layout_marginTop="40dp"
-                android:background="@color/white_color"
+                android:background="@color/round_stroke_color"
                 app:layout_constraintStart_toStartOf="@+id/textViewUvIndex"
                 app:layout_constraintTop_toBottomOf="@+id/textViewUvIndex" />
 
@@ -257,7 +259,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_marginLeft="4dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="30dp"
                 android:text="Wind"
                 android:textSize="25sp"
                 android:textStyle="normal"
@@ -271,7 +273,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_marginLeft="4dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="10dp"
                 android:text="16"
                 android:textSize="30sp"
                 android:textStyle="normal"
@@ -279,14 +281,15 @@
                 app:layout_constraintStart_toStartOf="@+id/textViewWind"
                 app:layout_constraintTop_toBottomOf="@+id/textViewWind"/>
 
-            <Space
+            <View
                 android:id="@+id/spaceWindDetails"
                 android:layout_width="match_parent"
-                android:layout_height="3dp"
+                android:layout_height="2dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginLeft="20dp"
-                android:layout_marginTop="40dp"
-                android:background="@color/white_color"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="30dp"
+                android:background="@color/round_stroke_color"
                 app:layout_constraintStart_toStartOf="@+id/textViewWindValue"
                 app:layout_constraintTop_toBottomOf="@+id/textViewWindValue" />
 
@@ -296,7 +299,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_marginLeft="4dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="20dp"
                 android:text="@string/sunrise_text"
                 android:textSize="25sp"
                 android:textStyle="normal"
@@ -306,14 +309,13 @@
 
             <TextView
                 android:id="@+id/textViewSunrise"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_marginLeft="4dp"
                 android:layout_marginTop="40dp"
                 android:text="Sunrise"
-                android:textSize="25sp"
-                app:layout_constraintHorizontal_weight="1"
+                android:textSize="20sp"
                 android:textStyle="normal"
                 android:textColor="@color/white_color"
                 app:layout_constraintStart_toStartOf="@+id/textViewWind"
@@ -321,7 +323,7 @@
 
             <ImageView
                 android:id="@+id/imageViewUpWardSunrise"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="2dp"
                 android:layout_marginLeft="2dp"
@@ -338,8 +340,7 @@
                 android:layout_marginLeft="4dp"
                 android:layout_marginTop="10dp"
                 android:text="06:01 AM"
-                android:textSize="25sp"
-                app:layout_constraintHorizontal_weight="1"
+                android:textSize="20sp"
                 android:textStyle="normal"
                 android:textColor="@color/white_color"
                 app:layout_constraintStart_toStartOf="@+id/textViewSunrise"
@@ -350,25 +351,24 @@
                 android:id="@+id/textViewSunset"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="170dp"
                 android:text="Sunset"
-                android:textSize="20sp"
-                app:layout_constraintHorizontal_weight="1"
-                android:layout_marginStart="5dp"
                 android:textColor="@color/white_color"
+                android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="@+id/textViewSunrise"
-                app:layout_constraintTop_toTopOf="@+id/textViewSunrise"
                 app:layout_constraintStart_toEndOf="@+id/imageViewUpWardSunrise"
-                tools:layout_editor_absoluteX="135dp"
-                android:layout_marginLeft="5dp" />
+                app:layout_constraintTop_toTopOf="@+id/textViewSunrise"
+                app:layout_constraintVertical_bias="0.0"
+                tools:ignore="MissingConstraints" />
 
             <ImageView
                 android:id="@+id/imageViewUpWardSunset"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="2dp"
-                android:layout_marginLeft="2dp"
-                android:src="@drawable/ic_arrow_upward"
+                android:src="@drawable/ic_arrow_downward"
+                android:layout_marginEnd="36dp"
                 app:layout_constraintBottom_toBottomOf="@+id/textViewSunset"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textViewSunset"
                 app:layout_constraintTop_toTopOf="@+id/textViewSunset" />
 
@@ -379,9 +379,8 @@
                 android:layout_marginStart="4dp"
                 android:layout_marginLeft="4dp"
                 android:layout_marginTop="10dp"
-                android:text="06:45 PM"
-                android:textSize="25sp"
-                app:layout_constraintHorizontal_weight="1"
+                android:text="08:45 PM"
+                android:textSize="20sp"
                 android:textStyle="normal"
                 android:textColor="@color/white_color"
                 app:layout_constraintStart_toStartOf="@+id/textViewSunset"
