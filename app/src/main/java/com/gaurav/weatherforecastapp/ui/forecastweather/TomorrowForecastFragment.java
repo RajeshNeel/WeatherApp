@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.gaurav.weatherforecastapp.R;
 import com.gaurav.weatherforecastapp.retrofit.response.WeatherForecastDataResponse;
@@ -40,8 +41,9 @@ import butterknife.ButterKnife;
 public class TomorrowForecastFragment extends Fragment {
 
     private ForeCastWeatherViewModel foreCastWeatherViewModel;
-    private String cityName = "Bangalore";
-    private String weatherApiKey ="2de26709fcc9817162aa9909b587d145";
+    WeatherForecastDataResponse.WeatherForecastCityInfo weatherForecastCityInfo = null;
+    WeatherForecastDataResponse weatherForecastDataResponse  = null;
+
 
     @BindView(R.id.textViewCurrentDateForecast) TextView textCurrentDateTime;
     @BindView(R.id.textViewTemperatureForecast)  TextView textCurrentTemp;
@@ -93,11 +95,38 @@ public class TomorrowForecastFragment extends Fragment {
         setHasOptionsMenu(true);
 
 
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(cityName);
+        if(!CommonMethods.haveNetworkConnection(getContext())){
 
-        WeatherForecastDataResponse.WeatherForecastCityInfo weatherForecastCityInfo = null;
+
+            try {
+                weatherForecastDataResponse = SharedPreference.getWeatherSavedObjectFromPreference(getContext(),"WeatherForecastInfo", WeatherForecastDataResponse.class);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            if(weatherForecastDataResponse!=null ) {
+                CommonMethods.showToast(getActivity(), "current weather list size :" + weatherForecastDataResponse.getWeatherForecastCityInfo().getForecastCityName(), Toast.LENGTH_SHORT);
+                updateCurrentUi(weatherForecastDataResponse);
+            }
+            else{
+                CommonMethods.showToast(getActivity(),"data not available :",Toast.LENGTH_SHORT);
+            }
+        }
+        else{
+            updateCurrentUi(weatherForecastDataResponse);
+
+        }
+
+
+
+        return tomorrowForecastView;
+
+
+    }
+
+    private void updateCurrentUi(WeatherForecastDataResponse weatherForecastDataResponse) {
+
         try {
-            WeatherForecastDataResponse weatherForecastDataResponse =  SharedPreference.getWeatherSavedObjectFromPreference(getContext(),"WeatherForecastInfo", WeatherForecastDataResponse.class);
 
             List<WeatherForecastDataResponse.WeatherForecastDataInfo> weatherForecastDataInfoList = weatherForecastDataResponse.getWeatherForecastDataList();
 
@@ -136,18 +165,14 @@ public class TomorrowForecastFragment extends Fragment {
 
                     textCurrentDateTime.setText(weatherForecastDataInfoList.get(0).getForecastDate());
 
-                    float currntTemp = CommonMethods.convertKelvinToCelsius(Float.parseFloat(foreCastWeatherMainData.getTemp()));
-                    int currentTemp = (int) currntTemp;
-                    float feelsTemp = CommonMethods.convertKelvinToCelsius(Float.parseFloat(foreCastWeatherMainData.getTemp_kf()));
-                    int feels_like_temp = (int) feelsTemp;
-                    float minTmp = CommonMethods.convertKelvinToCelsius(Float.parseFloat(foreCastWeatherMainData.getMinTemp()));
-                    int minTemp = (int)minTmp;
-                    float maxTmp = CommonMethods.convertKelvinToCelsius(Float.parseFloat(foreCastWeatherMainData.getMaxTemp()));
-                    int maxTemp = (int)maxTmp;
+                    int currentTemp = (int) CommonMethods.convertKelvinToCelsius(Float.parseFloat(foreCastWeatherMainData.getTemp()));
+                    int feels_like_temp = (int) CommonMethods.convertKelvinToCelsius(Float.parseFloat(foreCastWeatherMainData.getTemp_kf()));
+                    int minTemp = (int)CommonMethods.convertKelvinToCelsius(Float.parseFloat(foreCastWeatherMainData.getMinTemp()));
+                    int maxTemp = (int)CommonMethods.convertKelvinToCelsius(Float.parseFloat(foreCastWeatherMainData.getMaxTemp()));
 
 
                     textCurrentTemp.setText(currentTemp+" \u00B0");
-                    textFeelsTemp.setText("feels like "+String.valueOf(feels_like_temp).concat(" \u00B0"));
+                    textFeelsTemp.setText("Feels like "+String.valueOf(feels_like_temp).concat(" \u00B0"));
                     textMinTemp.setText(String.valueOf(minTemp).concat(" \u00B0"));
                     textMaxTemp.setText(String.valueOf(maxTemp).concat(" \u00B0"));
 
@@ -155,6 +180,8 @@ public class TomorrowForecastFragment extends Fragment {
                     textPressure.setText(foreCastWeatherMainData.getPressure()+" mmHg");
                     textWind.setText(forecastWeatherWindData.getWindSpeed().concat(" "+"Km"+"/"+"h"));
                 }
+
+
                 WeatherForecastDataResponse.ForecastWeatherCoordinate forecastWeatherCoordinate = weatherForecastCityInfo.getForecastWeatherCoordinate();
 
             }
@@ -163,8 +190,6 @@ public class TomorrowForecastFragment extends Fragment {
         }
 
 
-
-        return tomorrowForecastView;
 
 
     }

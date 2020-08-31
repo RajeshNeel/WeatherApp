@@ -100,12 +100,82 @@ public class TwoDaysForecastFragment extends Fragment {
         twoDaysWeatherForecastAdapter.notifyDataSetChanged();
 
 
-        getWeatherForecastData(Constants.defaultCityName,Constants.weatherApiKey);
+        if(!CommonMethods.haveNetworkConnection(getContext())){
+
+            WeatherForecastDataResponse weatherForecastDataResponse  = null;
+            try {
+                weatherForecastDataResponse = SharedPreference.getWeatherSavedObjectFromPreference(getContext(),"WeatherForecastInfo", WeatherForecastDataResponse.class);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            if(weatherForecastDataResponse!=null ) {
+                CommonMethods.showToast(getActivity(), "current weather list size :" + weatherForecastDataResponse.getWeatherForecastCityInfo().getForecastCityName(), Toast.LENGTH_SHORT);
+                updateCurrentUi(weatherForecastDataResponse);
+            }
+            else{
+                CommonMethods.showToast(getActivity(),"Data not found .pls enable internet :",Toast.LENGTH_SHORT);
+            }
+        }
+        else{
+            getWeatherForecastData(Constants.defaultCityName,Constants.weatherApiKey);
+
+        }
+
 
 
 
 
         return twoDaysForecastView;
+    }
+
+    private void updateCurrentUi(WeatherForecastDataResponse weatherForecastDataResponse) {
+
+        List<WeatherForecastDataResponse.WeatherForecastDataInfo> weatherForecastDataInfoList = weatherForecastDataResponse.getWeatherForecastDataList();
+
+        WeatherForecastDataResponse.WeatherForecastCityInfo weatherForecastCityInfo = weatherForecastDataResponse.getWeatherForecastCityInfo();
+
+        Log.v(Constants.TAG,"forecast weather list size:"+weatherForecastDataInfoList.size());
+
+        for (WeatherForecastDataResponse.WeatherForecastDataInfo weatherForecastDataInfo : weatherForecastDataInfoList) {
+
+            Log.v(Constants.TAG,"forecast date :"+weatherForecastDataInfo.getForecastDate()+" forecast dt :"+ weatherForecastDataInfo.getForecastDt());
+
+            WeatherForecastDataResponse.ForeCastWeatherMainData foreCastWeatherMainData = weatherForecastDataInfo.getForeCastWeatherMainData();
+
+            for(WeatherForecastDataResponse.ForecastWeatherData forecastWeatherData : weatherForecastDataInfo.getForecastWeatherDataList()){
+
+                Log.v(Constants.TAG,"forecast weather data :"+"main :"+forecastWeatherData.getMain()+ "desc :"+forecastWeatherData.getDescription());
+
+
+                weatherForecastDataList.add(new WeatherForecastData(weatherForecastDataInfo.getForecastDate(),foreCastWeatherMainData.getTemp(),
+                        forecastWeatherData.getMain()));
+
+            }
+
+
+
+            WeatherForecastDataResponse.ForeCastWeatherCloudData foreCastWeatherCloudData = weatherForecastDataInfo.getForeCastWeatherCloudData();
+
+            WeatherForecastDataResponse.ForecastWeatherWindData forecastWeatherWindData = weatherForecastDataInfo.getForecastWeatherWindData();
+
+            recyclerViewTwoDaysForecastData.setAdapter(twoDaysWeatherForecastAdapter);
+            twoDaysWeatherForecastAdapter.notifyDataSetChanged();
+
+            Log.v(Constants.TAG,"cityName :"+ weatherForecastCityInfo.getForecastCityName()+" country :"+weatherForecastCityInfo.getForecastCountryName()
+                    +"mainData "+" temp :"+foreCastWeatherMainData.getTemp()+ "humidity :"+foreCastWeatherMainData.getHumidity()+"" +
+
+                    "pressure :"+foreCastWeatherMainData.getPressure());
+
+
+        }
+
+        WeatherForecastDataResponse.ForecastWeatherCoordinate forecastWeatherCoordinate = weatherForecastCityInfo.getForecastWeatherCoordinate();
+
+
+
+
+
     }
 
     private void getWeatherForecastData(String defaultCityName, String weatherApiKey) {
@@ -131,47 +201,7 @@ public class TwoDaysForecastFragment extends Fragment {
 
                             SharedPreference.saveWeatherObjectToSharedPreference(getContext(),"WeatherForecastInfo",weatherForecastDataResponse);
 
-
-                            List<WeatherForecastDataResponse.WeatherForecastDataInfo> weatherForecastDataInfoList = weatherForecastDataResponse.getWeatherForecastDataList();
-
-                            WeatherForecastDataResponse.WeatherForecastCityInfo weatherForecastCityInfo = weatherForecastDataResponse.getWeatherForecastCityInfo();
-
-                            Log.v(Constants.TAG,"forecast weather list size:"+weatherForecastDataInfoList.size());
-
-                            for (WeatherForecastDataResponse.WeatherForecastDataInfo weatherForecastDataInfo : weatherForecastDataInfoList) {
-
-                                Log.v(Constants.TAG,"forecast date :"+weatherForecastDataInfo.getForecastDate()+" forecast dt :"+ weatherForecastDataInfo.getForecastDt());
-
-                                WeatherForecastDataResponse.ForeCastWeatherMainData foreCastWeatherMainData = weatherForecastDataInfo.getForeCastWeatherMainData();
-
-                                for(WeatherForecastDataResponse.ForecastWeatherData forecastWeatherData : weatherForecastDataInfo.getForecastWeatherDataList()){
-
-                                    Log.v(Constants.TAG,"forecast weather data :"+"main :"+forecastWeatherData.getMain()+ "desc :"+forecastWeatherData.getDescription());
-
-
-                                    weatherForecastDataList.add(new WeatherForecastData(weatherForecastDataInfo.getForecastDate(),foreCastWeatherMainData.getTemp(),
-                                            forecastWeatherData.getMain()));
-
-                                }
-
-
-
-                                WeatherForecastDataResponse.ForeCastWeatherCloudData foreCastWeatherCloudData = weatherForecastDataInfo.getForeCastWeatherCloudData();
-
-                                WeatherForecastDataResponse.ForecastWeatherWindData forecastWeatherWindData = weatherForecastDataInfo.getForecastWeatherWindData();
-
-                                recyclerViewTwoDaysForecastData.setAdapter(twoDaysWeatherForecastAdapter);
-                                twoDaysWeatherForecastAdapter.notifyDataSetChanged();
-
-                                Log.v(Constants.TAG,"cityName :"+ weatherForecastCityInfo.getForecastCityName()+" country :"+weatherForecastCityInfo.getForecastCountryName()
-                                        +"mainData "+" temp :"+foreCastWeatherMainData.getTemp()+ "humidity :"+foreCastWeatherMainData.getHumidity()+"" +
-
-                                        "pressure :"+foreCastWeatherMainData.getPressure());
-
-
-                            }
-
-                            WeatherForecastDataResponse.ForecastWeatherCoordinate forecastWeatherCoordinate = weatherForecastCityInfo.getForecastWeatherCoordinate();
+                            updateCurrentUi(weatherForecastDataResponse);
 
                         }
                         else {

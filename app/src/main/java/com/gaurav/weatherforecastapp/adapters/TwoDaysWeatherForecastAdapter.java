@@ -4,13 +4,16 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.gaurav.weatherforecastapp.R;
 import com.gaurav.weatherforecastapp.models.WeatherForecastData;
+import com.gaurav.weatherforecastapp.utils.CommonMethods;
 
 import java.util.List;
 
@@ -40,10 +43,27 @@ public class TwoDaysWeatherForecastAdapter extends RecyclerView.Adapter<TwoDaysW
     public void onBindViewHolder(@NonNull TwoDaysForecastViewHolder holder, int position) {
 
         holder.forecastDate.setText(weatherForecastDataList.get(position).getForecastDate());
-        holder.forecastTemp.setText(weatherForecastDataList.get(position).getForecastTemp());
+
+        int currentTemp = (int)  CommonMethods.convertKelvinToCelsius(Float.parseFloat(weatherForecastDataList.get(position).getForecastTemp()));
+
+
+        holder.forecastTemp.setText(String.valueOf(currentTemp)+ " \\u00B0");
 
 
         holder.forecastWeatherDesc.setText(weatherForecastDataList.get(position).getForecastWeatherDesc());
+
+        if(weatherForecastDataList.get(position).getForecastWeatherDesc().equalsIgnoreCase("Clouds")){
+
+            holder.forecastImageView.setImageResource(R.drawable.moving_cloud_gif);
+
+        }
+
+        else if(weatherForecastDataList.get(position).getForecastWeatherDesc().equalsIgnoreCase("Rain")){
+            holder.forecastImageView.setImageResource(R.drawable.rain_gif);
+        }
+        else{
+            holder.forecastImageView.setImageResource(R.drawable.sun_animated_img);
+        }
 
     }
 
@@ -54,6 +74,7 @@ public class TwoDaysWeatherForecastAdapter extends RecyclerView.Adapter<TwoDaysW
 
     public static class TwoDaysForecastViewHolder extends RecyclerView.ViewHolder {
         TextView forecastDate, forecastTemp,forecastWeatherDesc;
+        ImageView forecastImageView;
 
         public TwoDaysForecastViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -61,6 +82,7 @@ public class TwoDaysWeatherForecastAdapter extends RecyclerView.Adapter<TwoDaysW
             forecastDate = itemView.findViewById(R.id.textViewDate);
             forecastTemp = itemView.findViewById(R.id.textViewForecastTemp);
             forecastWeatherDesc = itemView.findViewById(R.id.textViewWeatherDesc);
+            forecastImageView = itemView.findViewById(R.id.imageViewWeatherImage);
         }
     }
 }

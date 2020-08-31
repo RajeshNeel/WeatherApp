@@ -23,6 +23,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.gaurav.weatherforecastapp.R;
 import com.gaurav.weatherforecastapp.retrofit.response.CurrentWeatherDataResponse;
@@ -44,6 +45,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import pl.droidsonroids.gif.GifImageView;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
@@ -56,6 +58,7 @@ public class CurrentWeatherFragment extends Fragment {
     View navHeaderView;
     NavigationView navigationView;
     TextView textNavLocation;
+    CurrentWeatherDataResponse currentWeatherDataResponse  = null;
 
     @BindView(R.id.textViewCurrentDate) TextView textCurrentDateTime;
     @BindView(R.id.textViewTemperature)  TextView textCurrentTemp;
@@ -69,6 +72,9 @@ public class CurrentWeatherFragment extends Fragment {
     @BindView(R.id.textViewWindValue) TextView textWind;
     @BindView(R.id.textViewSunriseTime) TextView textSunriseTime;
     @BindView(R.id.textViewSunsetTime) TextView textSunsetTime;
+    @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout mySwipeRefreshLayout;
+    @BindView(R.id.imageViewgif) GifImageView gifImageView;
+
 
 
     @Override
@@ -100,24 +106,94 @@ public class CurrentWeatherFragment extends Fragment {
         }
         PlacesClient placesClient = Places.createClient(getContext());
 
-        getWeatherData(Constants.defaultCityName,Constants.weatherApiKey);
 
         navHeaderView =  navigationView.getHeaderView(0);
         textNavLocation = (TextView)navHeaderView.findViewById(R.id.textViewLocation);
-    //    navHeaderView =  navigationView.inflateHeaderView(R.layout.nav_header_main);
-     //   ImageView imgvw = (ImageView)hView.findViewById(R.id.imageView);
-      //   textNavLocation = (TextView)navHeaderView.findViewById(R.id.textViewLocation);
-    //    imgvw .setImageResource();
+
 
         fields = Arrays.asList(Place.Field.ID, Place.Field.NAME);
 
+        if(!CommonMethods.haveNetworkConnection(getContext())){
+
+
+            try {
+                currentWeatherDataResponse = SharedPreference.getWeatherSavedObjectFromPreference(getContext(),"CurrentWeatherInfo", CurrentWeatherDataResponse.class);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            if(currentWeatherDataResponse!=null ) {
+                CommonMethods.showToast(getActivity(), "current weather list size :" + currentWeatherDataResponse.getCityName(), Toast.LENGTH_SHORT);
+                updateCurrentUi(currentWeatherDataResponse);
+            }
+            else{
+                CommonMethods.showToast(getActivity(),"data not available :",Toast.LENGTH_SHORT);
+            }
+        }
+        else{
+            getWeatherData(Constants.defaultCityName,Constants.weatherApiKey);
+
+        }
+
+        mySwipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        Log.i(Constants.TAG, "onRefresh called from SwipeRefreshLayout");
+
+                        getWeatherData(Constants.defaultCityName,Constants.weatherApiKey);
+                    }
+                }
+        );
+
+
         return currentWeatherView;
+    }
+
+    private void updateCurrentUi(CurrentWeatherDataResponse currentWeatherDataResponse) {
+
+
+        List<CurrentWeatherDataResponse.WeatherData> weatherDataList = currentWeatherDataResponse.getWeatherDataList();
+
+        CurrentWeatherDataResponse.WeatherMainData weatherMainData = currentWeatherDataResponse.getWeatherMainData();
+
+        CurrentWeatherDataResponse.WeatherWindData weatherWindData = currentWeatherDataResponse.getWindData();
+
+        CurrentWeatherDataResponse.WeatherSysData weatherSysData = currentWeatherDataResponse.getSysData();
+
+
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(currentWeatherDataResponse.getCityName());
+        textNavLocation.setText(currentWeatherDataResponse.getCityName());
+        Constants.defaultCityName =  currentWeatherDataResponse.getCityName();
+
+        textCurrentDateTime.setText(CommonMethods.convertUnixToDate(Long.parseLong(currentWeatherDataResponse.getCurrentDate())).concat(" "+
+                Long.parseLong(currentWeatherDataResponse.getTimezone())));
+
+        int currentTemp = (int)  CommonMethods.convertKelvinToCelsius(Float.parseFloat(weatherMainData.getTemp()));
+        int feels_like_temp = (int) CommonMethods.convertKelvinToCelsius(Float.parseFloat(weatherMainData.getFeels_like()));
+        int minTemp = (int)CommonMethods.convertKelvinToCelsius(Float.parseFloat(weatherMainData.getMinTemp()));
+        int maxTemp = (int) CommonMethods.convertKelvinToCelsius(Float.parseFloat(weatherMainData.getMaxTemp()));
+
+        textCurrentTemp.setText(String.valueOf(currentTemp)+" \u00B0");
+        textFeelsTemp.setText("Feels like "+String.valueOf(feels_like_temp).concat(" \u00B0"));
+        textMinTemp.setText(String.valueOf(minTemp).concat(" \u00B0"));
+        textMaxTemp.setText(String.valueOf(maxTemp).concat(" \u00B0"));
+        textWeatherInfoDesc.setText(weatherDataList.get(0).getMain());
+        textHumidity.setText(weatherMainData.getHumidity()+"%");
+        textPressure.setText(weatherMainData.getPressure()+" mmHg");
+        textWind.setText(weatherWindData.getWindSpeed().concat(" "+"Km"+"/"+"h"));
+        textSunriseTime.setText(String.valueOf(CommonMethods.convertUnixToHour(Long.parseLong(weatherSysData.getSunriseTime()))));
+        textSunsetTime.setText(String.valueOf(CommonMethods.convertUnixToHour(Long.parseLong(weatherSysData.getSunsetTime()))));
+
+
+
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(Constants.defaultCityName);
+    //    ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(Constants.defaultCityName);
     }
 
     private void getWeatherData(String enteredCityName, String weatherApiKey){
@@ -144,50 +220,12 @@ public class CurrentWeatherFragment extends Fragment {
 
                            SharedPreference.saveWeatherObjectToSharedPreference(getContext(),"CurrentWeatherInfo",currentWeatherDataResponse);
 
-                           List<CurrentWeatherDataResponse.WeatherData> weatherDataList = currentWeatherDataResponse.getWeatherDataList();
+                           updateCurrentUi(currentWeatherDataResponse);
 
-                           CurrentWeatherDataResponse.WeatherMainData weatherMainData = currentWeatherDataResponse.getWeatherMainData();
-
-                           CurrentWeatherDataResponse.WeatherWindData weatherWindData = currentWeatherDataResponse.getWindData();
-
-                           CurrentWeatherDataResponse.WeatherSysData weatherSysData = currentWeatherDataResponse.getSysData();
-
-                           String cityName = currentWeatherDataResponse.getCityName();
-                           String statusCode = currentWeatherDataResponse.getStatusCod();
-                           String timeZone = currentWeatherDataResponse.getTimezone();
-                           String date = currentWeatherDataResponse.getCurrentDate();
-
-
-                           Log.v(Constants.TAG," City :"+cityName+ "timeZone :"+timeZone+ " temp :"+weatherMainData.getTemp()+" humidity :"+weatherMainData.getHumidity()
-                                   +" speed :"+weatherWindData.getWindSpeed());
-
-                           ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(currentWeatherDataResponse.getCityName());
-                           textNavLocation.setText(currentWeatherDataResponse.getCityName());
-                           Constants.defaultCityName =  currentWeatherDataResponse.getCityName();
-
-                           textCurrentDateTime.setText(CommonMethods.convertUnixToDate(Long.parseLong(currentWeatherDataResponse.getCurrentDate())).concat(" "+
-                                   Long.parseLong(currentWeatherDataResponse.getTimezone())));
-
-                           float currntTemp = CommonMethods.convertKelvinToCelsius(Float.parseFloat(weatherMainData.getTemp()));
-                           int currentTemp = (int) currntTemp;
-                           float feelsTemp = CommonMethods.convertKelvinToCelsius(Float.parseFloat(weatherMainData.getFeels_like()));
-                           int feels_like_temp = (int) feelsTemp;
-                           float minTmp = CommonMethods.convertKelvinToCelsius(Float.parseFloat(weatherMainData.getMinTemp()));
-                           int minTemp = (int)minTmp;
-                           float maxTmp = CommonMethods.convertKelvinToCelsius(Float.parseFloat(weatherMainData.getMaxTemp()));
-                           int maxTemp = (int)maxTmp;
-
-                           textCurrentTemp.setText(String.valueOf(currentTemp)+" \u00B0");
-                           textFeelsTemp.setText("feels like "+String.valueOf(feels_like_temp).concat(" \u00B0"));
-                           textMinTemp.setText(String.valueOf(minTemp).concat(" \u00B0"));
-                           textMaxTemp.setText(String.valueOf(maxTemp).concat(" \u00B0"));
-                           textWeatherInfoDesc.setText(weatherDataList.get(0).getMain());
-                           textHumidity.setText(weatherMainData.getHumidity()+"%");
-                           textPressure.setText(weatherMainData.getPressure()+" mmHg");
-                           textWind.setText(weatherWindData.getWindSpeed().concat(" "+"Km"+"/"+"h"));
-                           textSunriseTime.setText(String.valueOf(CommonMethods.convertUnixToHour(Long.parseLong(weatherSysData.getSunriseTime()))));
-                           textSunsetTime.setText(String.valueOf(CommonMethods.convertUnixToHour(Long.parseLong(weatherSysData.getSunsetTime()))));
-
+                           Log.v(Constants.TAG," City :"+currentWeatherDataResponse.getCityName()+ "timeZone :"+currentWeatherDataResponse.getTimezone()+ " date :"+currentWeatherDataResponse.getCurrentDate()+" " +
+                                   "humidity :"+currentWeatherDataResponse.getWeatherMainData().getHumidity()
+                                   +" speed :"+currentWeatherDataResponse.getWindData().getWindSpeed());
+                           mySwipeRefreshLayout.setRefreshing(false);
 
                        }
 
