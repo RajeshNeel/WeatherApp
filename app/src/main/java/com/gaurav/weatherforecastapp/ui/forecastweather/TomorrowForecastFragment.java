@@ -94,15 +94,16 @@ public class TomorrowForecastFragment extends Fragment {
         ButterKnife.bind(this,tomorrowForecastView);
         setHasOptionsMenu(true);
 
+        try {
+            weatherForecastDataResponse = SharedPreference.getWeatherSavedObjectFromPreference(getContext(),"WeatherForecastInfo", WeatherForecastDataResponse.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         if(!CommonMethods.haveNetworkConnection(getContext())){
 
 
-            try {
-                weatherForecastDataResponse = SharedPreference.getWeatherSavedObjectFromPreference(getContext(),"WeatherForecastInfo", WeatherForecastDataResponse.class);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+
 
             if(weatherForecastDataResponse!=null ) {
                 CommonMethods.showToast(getActivity(), "current weather list size :" + weatherForecastDataResponse.getWeatherForecastCityInfo().getForecastCityName(), Toast.LENGTH_SHORT);
@@ -161,7 +162,7 @@ public class TomorrowForecastFragment extends Fragment {
                 ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(weatherForecastCityInfo.getForecastCityName());
 
 
-                if(currentPosition==7){
+                if(currentPosition==31){
 
                     textCurrentDateTime.setText(weatherForecastDataInfoList.get(0).getForecastDate());
 

@@ -38,8 +38,8 @@
 
             <ImageView
                 android:id="@+id/imageViewWeatherImage"
-                android:layout_width="130dp"
-                android:layout_height="60dp"
+                android:layout_width="140dp"
+                android:layout_height="80dp"
                 android:layout_marginTop="16dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewDate"
@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="70dp"
                 android:text="37\u00B0"
-                android:textSize="50sp"
+                android:textSize="60sp"
                 app:layout_constraintBottom_toBottomOf="@+id/imageViewWeatherImage"
                 app:layout_constraintStart_toEndOf="@+id/imageViewWeatherImage"
                 app:layout_constraintTop_toTopOf="@+id/imageViewWeatherImage" />
@@ -60,8 +60,8 @@
                 android:id="@+id/textViewWeatherDesc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:text="Partly cloudy"
                 android:textSize="20sp"
                 android:textColor="@color/blue_color"
