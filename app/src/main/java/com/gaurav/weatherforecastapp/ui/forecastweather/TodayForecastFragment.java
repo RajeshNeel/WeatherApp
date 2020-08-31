@@ -106,7 +106,7 @@ public class TodayForecastFragment extends Fragment {
             }
 
             if(weatherForecastDataResponse!=null ) {
-                CommonMethods.showToast(getActivity(), "current weather list size :" + weatherForecastDataResponse.getWeatherForecastCityInfo().getForecastCityName(), Toast.LENGTH_SHORT);
+           //     CommonMethods.showToast(getActivity(), "current weather list size :" + weatherForecastDataResponse.getWeatherForecastCityInfo().getForecastCityName(), Toast.LENGTH_SHORT);
                 updateCurrentUi(weatherForecastDataResponse);
             }
             else{

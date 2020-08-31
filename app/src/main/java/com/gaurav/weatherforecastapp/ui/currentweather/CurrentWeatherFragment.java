@@ -123,7 +123,7 @@ public class CurrentWeatherFragment extends Fragment {
             }
 
             if(currentWeatherDataResponse!=null ) {
-                CommonMethods.showToast(getActivity(), "current weather list size :" + currentWeatherDataResponse.getCityName(), Toast.LENGTH_SHORT);
+             //   CommonMethods.showToast(getActivity(), "current weather list size :" + currentWeatherDataResponse.getCityName(), Toast.LENGTH_SHORT);
                 updateCurrentUi(currentWeatherDataResponse);
             }
             else{

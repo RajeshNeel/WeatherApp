@@ -43,6 +43,9 @@ public class TwoDaysWeatherForecastAdapter extends RecyclerView.Adapter<TwoDaysW
     public void onBindViewHolder(@NonNull TwoDaysForecastViewHolder holder, int position) {
 
         int positions =28;
+
+        
+
         holder.forecastDate.setText(weatherForecastDataList.get(position).getForecastDate());
 
         int currentTemp = (int)  CommonMethods.convertKelvinToCelsius(Float.parseFloat(weatherForecastDataList.get(position).getForecastTemp()));
